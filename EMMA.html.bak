@@ -17,15 +17,31 @@
     <p>Tutorials use <a href="https://jupyter.org/">Jupyter</a> and Jupyter
       notebooks.</p>
     <h3>Docker installation</h3>
-    <p>Installation of Anaconda and Jupyter in docker containers (<a href="https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook"
-
+    <p>Installation of Anaconda and Jupyter in docker containers (<a href="https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook"
         target="_blank">Tutorial</a>).</p>
-    <p><span style="Instr"><br>
-      </span></p>
-    <p><span style="Instr">docker run --rm -it -p 8888:8888 -v
-        "$(pwd):/notebooks" jupyter/notebook</span></p>
+    <p> <span class="Instr">docker run --rm -it -p 8888:8888 -v "$(pwd):/notebooks"    jupyter/notebook</span></p>
+    <p>In Windows, it becomes:&nbsp; </p>
+    <p><span class="Instr">C:\Users\cassmedchem\dockers\docker-data-science&gt;docker run --rm -it -p 8888:8888 -v "c:\Users\cassmedchem\dockers\docker-data-science:/home/jovyan" jupyter/datascience-notebook<br></span></p>
+    <p>A jupyter server starts and it is possible to reach the server with the
+      suggested instructions:</p>
+    <p></p>
+    <p><span class="Instr">Copy/paste this URL into your browser when you connect for the
+        first time,<br>        &nbsp;&nbsp;&nbsp; to login with a token:<br>        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; http://(0d68dd74c6db or
+        127.0.0.1):8888/?token=99476f67906b4de587128cd15e043719fd3ff55173e32c20</span></p>
+    <p>In c:\Users\cassmedchem\dockers\docker-data-science there will be the
+      notebook with the PyEMMA tutorial that can be loaded in Jupyter.</p>
+    <p>It is necessary to install PyEMMA using a Conda terminal:</p>
+    <ul>
+      <li>From the main windows of Jupyter</li>
+      <li>New-&gt;Terminal</li>
+      <li><br>
+      </li>
+    </ul>
     <p><br>
-       </p>
+    </p>
+    <p><br>
+    </p>
     <p> </p>
+    <p></p>
   </body>
 </html>
