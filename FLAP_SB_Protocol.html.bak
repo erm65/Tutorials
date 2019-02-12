@@ -10,7 +10,29 @@
     <h2>Introduction</h2>
     <p>FLAP is used to refine results obtained from an analysis performed with
       PocketQuery/ZINCPharm online tools</p>
+    <p>PocketQuery is a web service for interactively exploring not only hot
+      spot and anchor residues, but hot regions, defined by clusters of
+      residues, at the interface of protein-protein interactions. </p>
     <h2>Instructions</h2>
-    <p>Pocket Query</p>
+    <h3>Pocket Query</h3>
+    <p>Open a browser and connect to <a href="http://pocketquery.csb.pitt.edu/"
+        title="PockerQuery" target="_blank">http://pocketquery.csb.pitt.edu/</a></p>
+    <ul>
+      <li>Edge could give problems</li>
+    </ul>
+    <p>Click on <b>Search</b></p>
+    <p>Type PDB code</p>
+    <ul>
+      <li>You can <b>Add Search Criteria</b></li>
+      <ul>
+        <li>Chain to select the chain under study</li>
+      </ul>
+    </ul>
+    <p>Click on <b>Search </b>to submit the query</p>
+    <p><br>
+    </p>
+    <h3>FLAP refinement</h3>
+    <p><br>
+    </p>
   </body>
 </html>
