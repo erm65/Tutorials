@@ -91,19 +91,39 @@
     <ul>
       <li>Option <b>Search for pockets</b> can be used to search automatically
         the pockets</li>
-      <li>Option Search by residue can be used to focus the search a region
-        around one or more residuals</li>
+      <li>Option <b>Search by residue</b> can be used to focus the search a
+        region around one or more residuals</li>
+      <ul>
+        <li>Select one or more residue by picking with the mouse in the <b>Pocket
+            by residue</b> window, after picking the mouse a residue line with
+          all residue</li>
+      </ul>
     </ul>
     <p>Select pocket</p>
     <ul>
-      <li><br>
-      </li>
+      <li>Give a name to the pocket in <b>Pocket name</b> </li>
+      <li><b>OK</b></li>
     </ul>
     <h4>Structure-Based Virtual Screening (SBVS)</h4>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
+    <p>In the <b>Database </b>panel select molecules, if no molecules are
+      selected the screening is carried out on the entire database</p>
+    <b>Structure-based</b> | <b>Do SBVS</b>
+    <ul>
+      <li>Set the <b>Screening name</b> </li>
+      <li>Choose the target: <b>add target</b> and select the pocket from the <b>Define
+          pocket and Enable Objects</b> window</li>
+      <li>Parameters</li>
+      <ul>
+        <li>select <b>pose optimization </b>on shape</li>
+        <ul>
+          <li>The option onGlobSum with highest accuracy crashed FLAP but more
+            investigations are required to understand the problem</li>
+        </ul>
+        <li>Accuracy level 2 (4=High, 1=Low) successfully tested with a dataset
+          of about 3000 molecules in a reasonable time</li>
+      </ul>
+    </ul>
+    <p>Finally, analyze the results in the <b>Screening </b>panel</p>
     <p><br>
     </p>
   </body>
