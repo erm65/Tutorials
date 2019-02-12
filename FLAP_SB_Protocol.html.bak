@@ -50,14 +50,53 @@
     <p>Use the panel <b>Pharmacophore </b>to define the hot spots that will be
       used in the screening</p>
     <p>Click on <b>Submit Query</b></p>
-    <p>After the screening, <b>Save Results</b> to obtain a </p>
+    <p>After the screening, <b>Save Results</b> to obtain a file sdf with the
+      coordinates of compounds that better respond to the pharmacophore criteria</p>
     <ul>
+      <li>The coordinates refer to the conformation that is able to optimize
+        interaction with the receptor on the basis of ZINCPharmer force field</li>
       <li>It is possible to enable or disable different pharmacophoric points
-        (HBA, HBD, Hydrophobic points</li>
+        (HBA, HBD, Hydrophobic points and Aromatic)</li>
       <li>Probably, it should be convenient to try different pharmacophores and
-        Save reul</li>
+        save the corresponding results, all the results can be merged to obtain
+        the final dataset of candidates to submit to FLAP</li>
     </ul>
     <h3>FLAP refinement</h3>
+    <p>Launch FLAP</p>
+    <h4>Database creation</h4>
+    <p><b>Database </b>| <b>Create </b>-&gt; FLAP open the <b>FLAP Database
+        Creation window</b></p>
+    <ul>
+      <li>Create e directory and use it as the Database location</li>
+    </ul>
+    <p><b>Create Database</b></p>
+    <ul>
+      <li>Select options</li>
+      <li>We do not have the protonation tool thus the molecules have to be in
+        the correct ionization state</li>
+      <li>Select <b>do fully energy minimization</b> with default parameter (25
+        kcal/mol)</li>
+      <li><b>Duplicate </b>refuse</li>
+    </ul>
+    <p><b>Start import</b></p>
+    <h4>Setting of the target</h4>
+    <p><b>Structure-based</b> | <b>Load protein</b></p>
+    <ul>
+      <li>Fix pdb</li>
+      <li>Select how water molecules will be considered</li>
+    </ul>
+    <p><b>Ok</b></p>
+    <p>FLAP open the <b>Target setup</b> window</p>
+    <p>Select pocket</p>
+    <ul>
+      <li><br>
+      </li>
+    </ul>
+    <h4>Structure-Based Virtual Screening (SBVS)</h4>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
     <p><br>
     </p>
   </body>
