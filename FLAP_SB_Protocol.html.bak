@@ -17,9 +17,6 @@
     <h3>Pocket Query</h3>
     <p>Open a browser and connect to <a href="http://pocketquery.csb.pitt.edu/"
         title="PockerQuery" target="_blank">http://pocketquery.csb.pitt.edu/</a></p>
-    <ul>
-      <li>Edge could give problems</li>
-    </ul>
     <p>Click on <b>Search</b></p>
     <p>Type PDB code</p>
     <ul>
@@ -29,8 +26,37 @@
       </ul>
     </ul>
     <p>Click on <b>Search </b>to submit the query</p>
-    <p><br>
+    <p>Analyze clusters to find pockets using the two panels <b>Residues </b>and
+      <b>Export</b></p>
+    <ul>
+      <li>Pay attention to the correct definition of the ligand protein and the
+        receptor protein</li>
+    </ul>
+    <p>When the pocket is found, it is possible to direclty export, panel <b>Export</b>,
+      in ZINCPharmer (<b>Send to ZINCPharmer</b>)</p>
+    <ul>
+      <li>More than one cluster could be used to define the fine pocket</li>
+    </ul>
+    <h3>ZINCPharmer</h3>
+    <p>Open the browser and connect to <a href="http://zincpharmer.csb.pitt.edu/"
+        title="ZINCPharmer" target="_blank">http://zincpharmer.csb.pitt.edu/</a>
     </p>
+    <ul>
+      <li>If you sent the pocket to ZINCPharmer from PocketQuery the browser is
+        already open</li>
+      <li>Java could have problems, but only for visualization of surfaces thus
+        it is possible to proceed</li>
+    </ul>
+    <p>Use the panel <b>Pharmacophore </b>to define the hot spots that will be
+      used in the screening</p>
+    <p>Click on <b>Submit Query</b></p>
+    <p>After the screening, <b>Save Results</b> to obtain a </p>
+    <ul>
+      <li>It is possible to enable or disable different pharmacophoric points
+        (HBA, HBD, Hydrophobic points</li>
+      <li>Probably, it should be convenient to try different pharmacophores and
+        Save reul</li>
+    </ul>
     <h3>FLAP refinement</h3>
     <p><br>
     </p>
