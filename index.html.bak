@@ -10,8 +10,10 @@
     <p>The tutorials are intended for internal use in CASSMedChem laboratory</p>
     <h3>List</h3>
     <ul>
-      <li><a href="EMMA.html">PyEMMA</a></li>
       <li><a href="FLAP_SB_Protocol.html">FLAP SBVS</a></li>
+      <li><a href="file:///C:/Users/cassmedchem/Documents/GitHub/Tutorials/Linux_commands.html"
+          title="Linux commands">Linux commands</a></li>
+      <li><a href="EMMA.html">PyEMMA</a></li>
     </ul>
     <h3>Useful links</h3>
     <h4>M</h4>
