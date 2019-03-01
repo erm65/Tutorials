@@ -34,9 +34,11 @@
     <ul>
       <li>From the main windows of Jupyter</li>
       <li>New-&gt;Terminal</li>
-      <li><br>
-      </li>
+      <li>conda install-c conda-forge pyemma</li>
+      <li>pip installmdshare</li>
     </ul>
+    <p><br>
+    </p>
     <p><br>
     </p>
     <p><br>

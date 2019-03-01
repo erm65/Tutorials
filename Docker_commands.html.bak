@@ -18,13 +18,26 @@
     <ul>
       <li>It shows the list of available docker images</li>
     </ul>
-    <p>docker ps -a</p>
+    <p></p>
+    <div id="Instr">docker ps -a</div>
+    <p></p>
     <ul>
       <li>It shows the list of containers</li>
     </ul>
-    <p>docker system prune&nbsp; -a</p>
+    <p></p>
+    <div id="Instr">docker system prune&nbsp; -a</div>
+    <p></p>
     <ul>
       <li>It removes&nbsp; all unused containers</li>
+    </ul>
+    <p><div id="Instr">docker&nbsp; build image .</div></p>
+    <ul>
+      <li>An image is built on the basis of the instructions written in the
+        Dockerfile&nbsp; (the name of the file must be Dockerfile) created&nbsp;
+        in the&nbsp; directory where docker is launched (the "." means that the
+        Dockerfileis there)</li>
+    </ul>
+    <ul>
     </ul>
     <ul>
     </ul>
