@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PyMol</title>
     <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>PyMol</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
@@ -53,9 +53,45 @@
       directory</p>
     <div id="Instr">cd c:\PyMOL_Installation</div>
     <p>Install PyMOL and required software:</p>
+    <div id="Instr">c:\PyMOL_Installation&gt;c:\Python37\python
+      pip-19.0.2-py2.py3-none-any.whl\pip install --no-index
+      --find-links="%CD%"&nbsp; pymol_launcher</div>
     <ul>
-      <li><br>
-      </li>
+      <li>Where it is important the correct version of pip whereas
+        pymol_launcher does not require any further specifications</li>
+    </ul>
+    <h3>Matteo's plugin</h3>
+    <p>Copy the following lines in a file named psa_3d.py located in
+      c:\PyMOL_Installation</p>
+    <div id="Instr">from pymol import cmd<br>
+      def psa3d (arg1=0.6, arg2=-0.6):<br>
+      &nbsp;&nbsp; &nbsp;obj_list = cmd.get_names('objects') <br>
+      &nbsp;&nbsp; &nbsp;for obj in obj_list: <br>
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;cmd.select('noh',
+      '(pc.&gt;'+str(arg1)+'|pc.&lt;'+str(arg2)+'|(e. n OR e. o OR e. h
+      AND(neighbor e. n OR e. o))) AND ' + obj)<br>
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; print("3DPSA_noh06 %12s %.3f" %
+      (obj, cmd.get_area('noh'))) <br>
+      &nbsp;&nbsp; &nbsp;return obj<br>
+      cmd.extend("psa3d", psa3d)</div>
+    <p></p>
+    <ul>
+    </ul>
+    <p>Run PyMOL</p>
+    <p>Click on Plugin - Plugin Manager - Install New Plugin - Choose file</p>
+    <p>Choose psa_3d.pyin the directory c:\PyMOL_Installation</p>
+    <p>Click Ok</p>
+    <ul>
+      <li>If all is ok a messagge will be shown that inform you that the plugin
+        has been installed</li>
+    </ul>
+    <p>Check on the Plugin Manager that the&nbsp; plugin is installed&nbsp; and
+      close it.</p>
+    <p>The plugin is ready.</p>
+    <p>Load a molecule and type psa_3d in the PyMOL command window</p>
+    <ul>
+      <li>It should be possible that it is necessary to exit and rerun PyMOL to
+        activate the plugin</li>
     </ul>
     <p><br>
     </p>

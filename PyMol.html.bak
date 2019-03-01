@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>PyMol</title>
     <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>PyMol</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
@@ -13,8 +13,7 @@
     <p>PyMOL is a user-sponsored molecular visualization system on an
       open-source foundation, maintained and distributed by Schrödinger.</p>
     <p>There is an open-source version&nbsp; freely available. More details can
-      be found at <a href="https://pymolwiki.org/index.php/TOPTOC" title="pymolwiki"
-
+      be found at <a href="https://pymolwiki.org/index.php/TOPTOC" title="pymolwiki"
         target="_blank">pymolwiki</a></p>
     <h2>Installation</h2>
     <h3> Windows</h3>
@@ -30,18 +29,17 @@
         <li><a href="https://www.python.org/downloads/" title="Python download">Python
             download</a></li>
       </ul>
-      <li>Pre-compiled version of PyMOL and required software from <a href="https://www.lfd.uci.edu/%7Egohlke/pythonlibs/"
-
+      <li>Pre-compiled version of PyMOL and required software from <a href="https://www.lfd.uci.edu/%7Egohlke/pythonlibs/"
           target="_blank">Christoph Gohlke page<br>
         </a> (open&nbsp; Gohlke page, in the page CTRL-F&nbsp; and use the
         search window to find the required software copying the strings below in
         the search window)</li>
       <ul>
-        <li>pymol?2.3.0?cp37?cp37m?win_amd64.whl</li>
-        <li>pymol_launcher?2.1?cp37?cp37m?win_amd64.whl</li>
-        <li>pip?19.0.2?py2.py3?none?any.whl</li>
-        <li>numpy?1.16.2+mkl?cp37?cp37m?win_amd64.whl</li>
-        <li>Pmw?2.0.1?py3?none?any.whl</li>
+        <li>pymol&#8209;2.3.0&#8209;cp37&#8209;cp37m&#8209;win_amd64.whl</li>
+        <li>pymol_launcher&#8209;2.1&#8209;cp37&#8209;cp37m&#8209;win_amd64.whl</li>
+        <li>pip&#8209;19.0.2&#8209;py2.py3&#8209;none&#8209;any.whl</li>
+        <li>numpy&#8209;1.16.2+mkl&#8209;cp37&#8209;cp37m&#8209;win_amd64.whl</li>
+        <li>Pmw&#8209;2.0.1&#8209;py3&#8209;none&#8209;any.whl</li>
       </ul>
     </ul>
     <p>Install Python (if necessary, before to begin the installation check is
@@ -54,8 +52,42 @@
     <p>Open a cmd&nbsp; window and change directory to the installation
       directory</p>
     <div id="Instr">cd c:\PyMOL_Installation</div>
-    <p><br>
-    </p>
+    <p>Install PyMOL and required software:</p>
+    <div id="Instr">c:\PyMOL_Installation&gt;c:\Python37\python
+      pip-19.0.2-py2.py3-none-any.whl\pip install --no-index
+      --find-links="%CD%"&nbsp; pymol_launcher</div>
+    <ul>
+      <li>Where it is important the correct version of pip whereas
+        pymol_launcher does not require any further specifications</li>
+    </ul>
+    <h3>Matteo's plugin</h3>
+    <p>Copy the following lines in a file named psa_3d.py located in
+      c:\PyMOL_Installation</p>
+    <div id="Instr">from pymol import cmd<br>
+      def psa3d (arg1=0.6, arg2=-0.6):<br>
+      &nbsp;&nbsp; &nbsp;obj_list = cmd.get_names('objects') <br>
+      &nbsp;&nbsp; &nbsp;for obj in obj_list: <br>
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;cmd.select('noh',
+      '(pc.&gt;'+str(arg1)+'|pc.&lt;'+str(arg2)+'|(e. n OR e. o OR e. h
+      AND(neighbor e. n OR e. o))) AND ' + obj)<br>
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; print("3DPSA_noh06 %12s %.3f" %
+      (obj, cmd.get_area('noh'))) <br>
+      &nbsp;&nbsp; &nbsp;return obj<br>
+      cmd.extend("psa3d", psa3d)</div>
+    <p></p>
+    <ul>
+    </ul>
+    <p>Run PyMOL</p>
+    <p>Click on Plugin - Plugin Manager - Install New Plugin - Choose file</p>
+    <p>Choose psa_3d.pyin the directory c:\PyMOL_Installation</p>
+    <p>Click Ok</p>
+    <ul>
+      <li>If all is ok a messagge will be shown that inform you that the plugin
+        has been installed</li>
+    </ul>
+    <p>Check on the Plugin Manager that the&nbsp; plugin is installed&nbsp; and
+      close it.</p>
+    <p>The plugin is ready</p>
     <p><br>
     </p>
     <p> </p>
