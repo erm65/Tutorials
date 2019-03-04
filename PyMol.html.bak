@@ -26,8 +26,8 @@
     <ul>
       <li>Python</li>
       <ul>
-        <li><a href="https://www.python.org/downloads/" title="Python download">Python
-            download</a></li>
+        <li><a href="https://www.python.org/ftp/python/3.7.2/python-3.7.2-amd64.exe"
+            title="Python download">Python download</a></li>
       </ul>
       <li>Pre-compiled version of PyMOL and required software from <a href="https://www.lfd.uci.edu/%7Egohlke/pythonlibs/"
           target="_blank">Christoph Gohlke page<br>
@@ -87,7 +87,12 @@
     </ul>
     <p>Check on the Plugin Manager that the&nbsp; plugin is installed&nbsp; and
       close it.</p>
-    <p>The plugin is ready</p>
+    <p>The plugin is ready.</p>
+    <p>Load a molecule and type psa_3d in the PyMOL command window</p>
+    <ul>
+      <li>It should be possible that it is necessary to exit and rerun PyMOL to
+        activate the plugin</li>
+    </ul>
     <p><br>
     </p>
     <p> </p>
