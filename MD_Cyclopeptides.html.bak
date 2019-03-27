@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>MD_Cyclopeptides</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <h1>MD: cyclopeptides</h1>
+    <h2>Introduction</h2>
+    <p>How setup a MD simulation for a cyclopeptide</p>
+    <p>The cyclopeptide has to be built following particular protocol to be sure
+      that it is considered as a cyclopeptide in GROMACS and in other software.</p>
+    <h2>How build the&nbsp; cyclopeptide</h2>
+    <h3>Build of the cyclopeptide using Vega</h3>
+    <p> Open Vega</p>
+    <ul>
+      <li>If the installation is required, the link to the software is <a href="https://nova.disfarm.unimi.it/cms/index.php">https://nova.disfarm.unimi.it/cms/index.php</a>
+      </li>
+    </ul>
+    <p>Open the peptide builder Modify - Build - Peptide</p>
+    <p>Write the sequence in the windows using the one-letter code for the amino
+      acids</p>
+    <p>Click on the<i> Add lateral chains</i> option and choose alpha helix
+      structure</p>
+    <p>Finally, click on the build button</p>
+    <p>Now, use Modify - Remove - Atom to delete two hydrogen atoms on the
+      N-terminus and the hydrogen on the C-terminus</p>
+    <p>Then, use Modify - Add - Bonds and connect the N-terminus with the C-
+      terminus</p>
+    <p>Calculate - Charge &amp; Potential end select GAFF_SMARTS as Force Field
+      and Ammp-Mom as charges</p>
+    <ul>
+      <li>It should be work but other charges can be used because here we want
+        to prepare a starting structure to submit to GROMACS that will
+        recalculate charges</li>
+    </ul>
+    <p>Calculate - Ammp - Minimization</p>
+    <p>Firstly, use default parameter and Truncated-Newton to minimize the
+      structure, if necessary repeat this step</p>
+    <p>Calculate - Ramachandran Plot</p>
+    <p>If the cyclopeptide shows a good distribution in the Ramachandran plot
+      then the structure is ok otherwise try to minimize with the genetic
+      algorithm </p>
+    <p>To obtain other starting structure, it is possible to use the
+      conformational analysis tool</p>
+    <p>Calculate - Ammp - Conformational search</p>
+    <ul>
+      <li>In the windows click on <i>Modify torsions</i></li>
+      <li>In the new window Modify - Add proteic torsions - Phi and Psi and then
+        close the window</li>
+      <li>Run the conformational search using all default parameters and <i>Boltzmann
+          jump</i> or <i>Random </i>method</li>
+      <li>Minimize structure and check the Ramachandran plot</li>
+    </ul>
+    <p>When at least one satisfactory model is obtained, it is possible to use
+      the model as starting point for the next steps</p>
+    <ul>
+      <li>It should be useful to obtain more than one model</li>
+    </ul>
+    <h3>Prepare cyclopeptide in GROMACS</h3>
+    <p>We follow the instruction in <a href="https://github.com/visvaldask/gmx_makecyclictop">https://github.com/visvaldask/gmx_makecyclictop</a>
+      using the Perl script downloadable in the same github site</p>
+    <p>First step, take your cyclic peptide/nucleotide pdb file and imagine it’s
+      linear (for a moment).</p>
+    <p>Add using text editor additional 2 additional residues to N and C
+      termini.</p>
+    <p>The additional residues should be as follows. The one added in the
+      beginning should be taken from the end, and the one added to the end
+      should be taken from the beginning.</p>
+    <ul>
+      <li>Delete the bond section of the pdb file</li>
+    </ul>
+    <p>Next step is renumbering residues (by hand) - important. Renumber first
+      and last residues by hand so that they follow one after another; the first
+      will be 0, and the last will be N+1, where N is the number of the amino
+      acids in the cyclic peptide.</p>
+    <p>The atom numbering is in a mess but it’s not important, just the residue
+      numbers are important.</p>
+    <p>Next run your edited file (let's say myfile.pdb) through GROMACS using
+      command something like: </p>
+    <div id="Instr">gmx pdb2gmx -f myfile.pdb -o myfile_gmx.pdb</div>
+    <p>GROMACS creates topology file, write down it’s name (probably topol.top,
+      but could be something else, like .itp file; if .itp is created, you
+      should use it instead of .top for step 3)</p>
+    <p>Now run the perl script on that top file:</p>
+    <p>gmx_makecyclictop.pl topfile</p>
+    <p>where topfile is the topology file created in step (2)</p>
+    <p>The script creates new topology file, e.g. topol_cyc.top.</p>
+    <p>Now we just have to make sure we have the PDB (or GRO) file matching it.</p>
+    <p>For this, delete the residues added at step (1) from the GROMACS
+      generated file (myfile_gmx.pdb)</p>
+    <p>Let's say the edited myfile_gmx.pdb without the first and last residues
+      is named myfile_gmx_edit.pdb</p>
+    <p>Use that file for your simulation purposes, e.g. convert it to GRO and
+      add simulation box:</p>
+    <p>gmx editconf -f myfile_gmx_edit.pdb -o myfile_gmx_edit.gro -bt cubic -d
+      1.0</p>
+    <p>Use myfile_gmx_edit.gro and topol_cyc.top for futher GROMACS simulations.</p>
+    <p> </p>
+    <p> </p>
+    <p></p>
+  </body>
+</html>
