@@ -57,6 +57,10 @@
       the model as starting point for the next steps</p>
     <ul>
       <li>It should be useful to obtain more than one model</li>
+      <li>WARNING: hydrogen atomes bound to the backbone amidic nitrogen shoutl
+        be named H without numbers. It could happen that in the first or in the
+        last amino acid there is a number in the name that must be deleted (e.g.
+        H1 must be modified in H without changes in the file format) .</li>
     </ul>
     <h3>Prepare cyclopeptide in GROMACS</h3>
     <p>We follow the instruction in <a href="https://github.com/visvaldask/gmx_makecyclictop">https://github.com/visvaldask/gmx_makecyclictop</a>
@@ -84,7 +88,7 @@
       but could be something else, like .itp file; if .itp is created, you
       should use it instead of .top for step 3)</p>
     <p>Now run the perl script on that top file:</p>
-    <p>gmx_makecyclictop.pl topfile</p>
+    <div id="Instr">gmx_makecyclictop.pl topfile</div>
     <p>where topfile is the topology file created in step (2)</p>
     <p>The script creates new topology file, e.g. topol_cyc.top.</p>
     <p>Now we just have to make sure we have the PDB (or GRO) file matching it.</p>
@@ -94,11 +98,63 @@
       is named myfile_gmx_edit.pdb</p>
     <p>Use that file for your simulation purposes, e.g. convert it to GRO and
       add simulation box:</p>
-    <p>gmx editconf -f myfile_gmx_edit.pdb -o myfile_gmx_edit.gro -bt cubic -d
-      1.0</p>
+    <div id="Instr">gmx editconf -f myfile_gmx_edit.pdb -o myfile_gmx_edit.gro
+      -bt cubic -d 1.0</div>
     <p>Use myfile_gmx_edit.gro and topol_cyc.top for futher GROMACS simulations.</p>
-    <p> </p>
-    <p> </p>
+    <h3>Summary of the instructions for MD preparation</h3>
+    <p>Preparation mv1_model1_gmx.pdb from mv1_model1.pdb by repetition of two
+      residues (the last as first residue and the first as last)</p>
+    <p>gmx pdb2gmx -f mv1_model1_temp.pdb -o mv1_model1_gmx.pdb</p>
+    <p>./gmx_makecyclictop.pl topol.top</p>
+    <p>Edit mv1_model1_gmx.pdb and delete the first and the last residue and
+      save it (e.g. mv1_model1_edit.pdb)</p>
+    <p>gmx editconf -f mv1_model1_edit.pdb -o mv1_model1_edit.gro -c -d 1.0 -bt
+      cubic</p>
+    <p>gmx solvate -cp mv1_model1_edit.gro -cs spc216.gro -o mv1_model1_solv.gro
+      -p topol_cyc.top</p>
+    <p>gmx grompp -f minim.mdp -c mv1_model1_solv.gro -p topol_cyc.top -o em</p>
+    <p>gmx mdrun -v -deffnm em</p>
+    <h3>Appendix</h3>
+    <h4>File minim.mdp</h4>
+    <div id="Instr">; minim.mdp - used as input into grompp to generate em.tpr
+      <p></p>
+      <p>; Parameters describing what to do, when to stop and what to save</p>
+      <p>integrator&nbsp; =
+        steep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Algorithm (steep
+        = steepest descent minimization)</p>
+      <p>emtol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        1000.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Stop minimization
+        when the maximum force &lt; 1000.0 kJ/mol/nm</p>
+      <p>emstep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        0.01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;
+        Minimization step size</p>
+      <p>nsteps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        50000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Maximum number
+        of (minimization) steps to perform</p>
+      <p><br>
+        ; Parameters describing how to find the neighbors of each atom and how
+        to calculate the interactions</p>
+      <p>nstlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Frequency to update
+        the neighbor list and long range forces</p>
+      <p>cutoff-scheme&nbsp;&nbsp; = Verlet&nbsp;&nbsp;&nbsp; ; Buffered
+        neighbor searching</p>
+      <p>ns_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        grid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Method to determine neighbor list
+        (simple, grid)</p>
+      <p>coulombtype&nbsp;&nbsp;&nbsp;&nbsp; =
+        PME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Treatment of long range
+        electrostatic interactions</p>
+      <p>rcoulomb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Short-range electrostatic
+        cut-off</p>
+      <p>rvdw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Short-range Van der Waals
+        cut-off</p>
+      <p>pbc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = xyz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Periodic Boundary Conditions
+        in all 3 dimensions</p>
+    </div>
     <p></p>
   </body>
 </html>
