@@ -115,7 +115,7 @@
     <p>gmx grompp -f minim.mdp -c mv1_model1_solv.gro -p topol_cyc.top -o em</p>
     <p>gmx mdrun -v -deffnm em</p>
     <h3>Appendix</h3>
-    <h4>File minim.mdp</h4>
+    <h5>File minim.mdp</h5>
     <div id="Instr">; minim.mdp - used as input into grompp to generate em.tpr
       <p></p>
       <p>; Parameters describing what to do, when to stop and what to save</p>

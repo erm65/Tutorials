@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>MD: Plain run in water</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <h1>MD: Plain run in water</h1>
+    <h2>Introduction</h2>
+    <p>How setup a MD simulation in water. Plain MD protocol</p>
+    <h2>Setup of the environment</h2>
+    <p>Open a terminal in the server</p>
+    <p>Setup the environment of the terminal</p>
+    <div id="Instr">term&gt; export PATH=/opt/gromacs/bin:$PATH<br>
+      term&gt; export PATH=/opt/biki/BiKiLifeSciences/vmd-1.9.2/vmd_bin/:$PATH<br>
+    </div>
+    <p>If a setup file is present it is possible to use the instruction <i>source
+        </i></p>
+    <div id="Instr">source $HOME/gromacs_setup.source</div>
+    <p>In this case the setup file is located in the HOME directory and is named
+      gromacs_setup.source</p>
+    <h2>Setup of the MD protocol</h2>
+    <p>Download the <a href="MD_Plain_Scripts/MD_Plain_scripts.tar" title="MD Plain scripts">scripts</a></p>
+    <p>Untar the files</p>
+    <div id="Instr">term&gt; ter -xvf MD_Plain_scripts.tar</div>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+  </body>
+</html>
