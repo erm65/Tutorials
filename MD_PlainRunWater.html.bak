@@ -11,6 +11,7 @@
     <p>How setup a MD simulation in water. Plain MD protocol</p>
     <h2>Setup of the environment</h2>
     <p>Open a terminal in the server</p>
+    <div id="Instr">term&gt;module load cuda/cuda-9.1</div>
     <p>Setup the environment of the terminal</p>
     <div id="Instr">term&gt; export PATH=/opt/gromacs/bin:$PATH<br>
       term&gt; export PATH=/opt/biki/BiKiLifeSciences/vmd-1.9.2/vmd_bin/:$PATH<br>
@@ -24,11 +25,40 @@
     <p>Download the <a href="MD_Plain_Scripts/MD_Plain_scripts.tar" title="MD Plain scripts">scripts</a></p>
     <p>Untar the files</p>
     <div id="Instr">term&gt; ter -xvf MD_Plain_scripts.tar</div>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
+    <p>All the necessary files are in the directory</p>
+    <ul>
+      <li>mdp files contain gromacs instructions</li>
+      <li>sh files are scripts that launch gromacs</li>
+    </ul>
+    <p>To run the MD protocol, two additional files are required:</p>
+    <ul>
+      <li>the starting file (file.gro)</li>
+      <li>the topology file (file.top)</li>
+    </ul>
+    <p>These two files are prepared following other instructions (e.g. <a href="MD_Cyclopeptides.html">MD
+        cylici peptides setup</a>, see the <a href="index.html">index </a>for
+      other setup protocols)</p>
+    <h2>Run the MD</h2>
+    <p>The scripts must be modified with a text editor changing the name of the
+      input files in the sh files</p>
+    <ul>
+      <li>the correct topological file should be written in all sh files</li>
+      <li>the gro initial file should be written in em.sh</li>
+      <li>the correct name should be written in run_fix2.sh </li>
+      <li>the scripts use conventional names for the other files that have to be
+        passed in the various steps of the protocol</li>
+    </ul>
+    <p>Firstly, run the minimization script</p>
+    <div id="Instr">term&gt; sh em_run.sh &gt; em_run.log &amp;</div>
+    <p>The minimization is fast and allows to verify that all is ok.</p>
+    <p>If the minimization finishes without errors, it is possible to run the
+      complete MD sequence</p>
+    <div id="Instr">term&gt; nohup ./run.sh &gt; run_run.log &amp;</div>
+    <p>Then gromcas runs and write messages in rur_run.log.</p>
+    <p>It is possible to close the terminal and logout form the server.</p>
+    <p>The results of the MD can be visualized using VMD</p>
+    <p>term&gt;vmd initialfile.gro finaltraj.xtc</p>
+    <div id="Instr">Where initialfile.gro is the starting structure and finaltraj.xtc is the
+      centered trajectory resulting from run_fix2.sh script.</div>
   </body>
 </html>
