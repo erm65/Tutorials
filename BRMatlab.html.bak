@@ -48,6 +48,13 @@
         </ul>
       </ul>
     </ul>
-    <br>
+    <p>When the test set is defined, type in the Command Window </p>
+    <div id="Instr">BRMatlab_Elaborate</div>
+    <p>The script runs PLS and performs&nbsp; BR analysis.</p>
+    <p>The results are written&nbsp; in a file named BRMatlab_Results that is
+      located in the directory where the scripts are located&nbsp; (<b><span style="color: #ff6666;">BUG
+          to be fixed</span></b>).</p>
+    <p>
+    </p>
   </body>
 </html>

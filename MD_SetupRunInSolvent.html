@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>MD: Setup MD in solvent</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <h1>MD: Setup MD in solvent</h1>
+    <h2>Introduction</h2>
+    How setup a MD simulation in a non-water solvent.
+    <p>A pre-equilibrated box of solvent molecules is required.</p>
+    <h2>Setup of the environment</h2>
+    <p>Open a terminal in the server (this instruction depend on the
+      configuration of the server)</p>
+    <div id="Instr">term&gt;module load cuda/cuda-9.1</div>
+    Setup the environment of the terminal
+    <div id="Instr">term&gt; export PATH=/opt/gromacs/bin:$PATH<br>
+      term&gt; export PATH=/opt/biki/BiKiLifeSciences/vmd-1.9.2/vmd_bin/:$PATH<br>
+    </div>
+    <p>If a setup file is present it is possible to use the instruction <i>source
+        </i></p>
+    <div id="Instr">source $HOME/gromacs_setup.source</div>
+    <p> In this case the setup file is located in the HOME directory and is
+      named gromacs_setup.source </p>
+    <h2>Preparation of MD files</h2>
+    <p>Mandatory files that must be present in the directory</p>
+    <ul>
+      <li>the original topological file prepared before the setup of other MDs
+        run</li>
+      <ul>
+        <li>no information about solvent should be present</li>
+      </ul>
+      <li>file pdb of the solute</li>
+      <li>file pdb of the solvent</li>
+      <li>topological file (.itp) of the solvent molecules</li>
+    </ul>
+    <p>Create the gro files with information about the box dimensions</p>
+    <div id="Instr">gmx editconf -f mv1_model1_edit.pdb -o mv1_model1_edit.gro
+      -bt cubic -d 1.0</div>
+    <p>Then solvate the solute (here a box of chloroform was used)</p>
+    <div id="Instr">gmx solvate -cp mv1_model1_edit.gro -cs CHL_Box.pdb -o
+      mv1_model1_solv.gro -p topol_cyc.top</div>
+    <p>Now, modify the topological file to include solvent information</p>
+    <ul>
+      <li>Add after <i>#include "amber99sb.ff/forcefield.itp"</i> the field <i>[
+          Atomtypes]</i></li>
+    </ul>
+    <p>[ atomtypes ]<br>
+      ; name&nbsp;&nbsp; mass&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      charge&nbsp;&nbsp; ptype&nbsp;&nbsp; sigma(nm)&nbsp;&nbsp;&nbsp;&nbsp;
+      epsilon (kJ/mol) <br>
+      &nbsp;cl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 35.500000&nbsp;
+      -0.30270&nbsp;&nbsp;&nbsp;&nbsp; A&nbsp;&nbsp; 3.47094e-01&nbsp;&nbsp;
+      1.10876e+00<br>
+      &nbsp;h3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.000000&nbsp;&nbsp;
+      0.30060&nbsp;&nbsp;&nbsp;&nbsp; A&nbsp;&nbsp; 2.11499e-01&nbsp;&nbsp;
+      6.56888e-02<br>
+      &nbsp;c3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 12.000000&nbsp;&nbsp;
+      0.00070&nbsp;&nbsp;&nbsp;&nbsp; A&nbsp;&nbsp; 3.39967e-01&nbsp;&nbsp;
+      4.57730e-01</p>
+    <ul>
+      <li>Add before <i>[ system ]</i> the following lines</li>
+    </ul>
+    <p>; Include solvent topoly<br>
+      #include "CHL.itp"</p>
+    <ul>
+      <li>Finally, in the <i>[ molecules ]</i> section add the name and the
+        number of the solvent molecules (information that can be obtained from
+        the file gro with the solvatate solute</li>
+    </ul>
+    <p>[ molecules ]<br>
+      ; Compound&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; #mols<br>
+      Protein&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      1<br>
+      CHL&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      226</p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <p></p>
+  </body>
+</html>

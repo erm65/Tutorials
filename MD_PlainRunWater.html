@@ -2,17 +2,18 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=windows-1252">
-    <title>MD: Plain run in water</title>
+    <title>MD: Plain run</title>
     <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
-    <h1>MD: Plain run in water</h1>
+    <h1>MD: Plain run</h1>
     <h2>Introduction</h2>
     <p>How setup a MD simulation in water. Plain MD protocol</p>
     <h2>Setup of the environment</h2>
-    <p>Open a terminal in the server</p>
+    <p>Open a terminal in the server (this instruction depend on the
+      configuration of the server)</p>
     <div id="Instr">term&gt;module load cuda/cuda-9.1</div>
-    <p>Setup the environment of the terminal</p>
+    <p>Setup the environment of the terminal </p>
     <div id="Instr">term&gt; export PATH=/opt/gromacs/bin:$PATH<br>
       term&gt; export PATH=/opt/biki/BiKiLifeSciences/vmd-1.9.2/vmd_bin/:$PATH<br>
     </div>
@@ -58,9 +59,7 @@
     <p>It is possible to close the terminal and logout form the server.</p>
     <p>The results of the MD can be visualized using VMD</p>
     <div id="Instr">term&gt;vmd initialfile.gro finaltraj.xtc</div>
-    <p>Where initialfile.gro is the starting structure and
-      finaltraj.xtc is the centered trajectory resulting from run_fix2.sh
-      script.</p>
-    
+    <p>Where initialfile.gro is the starting structure and finaltraj.xtc is the
+      centered trajectory resulting from run_fix2.sh script.</p>
   </body>
 </html>
