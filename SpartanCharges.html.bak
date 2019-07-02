@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <title>SpartanCharges</title>
+  </head>
+  <body>
+    <h1>Spartan Charges</h1>
+    <p> </p>
+    <h2> Instructions</h2>
+    <p>Launch Spartan</p>
+    <ul>
+      <li>File - Open</li>
+      <ul>
+        <li>Select All Files in the Open window</li>
+        <li>Click on the file containing the structure in the formatmol2 or pdb</li>
+      </ul>
+      <li>Setup - Calculations</li>
+      <ul>
+        <li>Change Equilibrium Geometry in Energy</li>
+        <li>Change Hartree-Fock in Semi-Empirical PM3</li>
+        <li>Click on Charges&amp; Bond Order</li>
+        <li>Submit</li>
+      </ul>
+      <li><br>
+      </li>
+    </ul>
+    <p><br>
+    </p>
+    <br>
+    <p> </p>
+  </body>
+</html>
