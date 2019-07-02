@@ -79,7 +79,7 @@
     </ul>
     <p>Run PyMOL</p>
     <p>Click on Plugin - Plugin Manager - Install New Plugin - Choose file</p>
-    <p>Choose psa_3d.pyin the directory c:\PyMOL_Installation</p>
+    <p>Choose psa_3d.py in the directory c:\PyMOL_Installation</p>
     <p>Click Ok</p>
     <ul>
       <li>If all is ok a messagge will be shown that inform you that the plugin
@@ -88,10 +88,19 @@
     <p>Check on the Plugin Manager that the&nbsp; plugin is installed&nbsp; and
       close it.</p>
     <p>The plugin is ready.</p>
-    <p>Load a molecule and type psa_3d in the PyMOL command window</p>
+    <p>Load a molecule and type psa3d in the PyMOL command window</p>
     <ul>
       <li>It should be possible that it is necessary to exit and rerun PyMOL to
         activate the plugin</li>
+    </ul>
+    <p>When the plugin works, the PSA could be calculated with the following
+      instruction</p>
+    <div id="Instr">
+      <p>set solvent_radius=1.4; set dot_density=4; set dot_solvent=1; psa3d</p>
+    </div>
+    <p><br>
+    </p>
+    <ul>
     </ul>
     <p><br>
     </p>
