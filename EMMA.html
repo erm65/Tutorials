@@ -17,14 +17,14 @@
     <p>Tutorials use <a href="https://jupyter.org/">Jupyter</a> and Jupyter
       notebooks.</p>
     <h3>Docker installation</h3>
-    <p>Installation of Anaconda and Jupyter in docker containers (<a href="https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook"
+    <p>Installation of Anaconda and Jupyter in docker containers (<a href="https://www.datacamp.com/community/tutorials/tutorial-jupyter-notebook"
+
         target="_blank">Tutorial</a>).</p>
     <p> </p>
     <p>In Windows, it becomes: </p>
-    <div id="Instr">C:\Users\cassmedchem\dockers\docker-data-science&gt;docker
-      run --rm -it -p 8888:8888 -v
-      "c:\Users\cassmedchem\dockers\docker-data-science:/home/jovyan"</div>
-    jupyter/datascience-notebook<br>
+    <div id="Instr">
+      <pre>C:\Users\cassmedchem\dockers\docker-data-science&gt; docker run --rm -it -p 8888:8888 -p 8889:8889 -v "c:\Users\cassmedchem\dockers\docker-data-science:/home/jovyan" jupyter_emma
+</pre> </div>
     <p>A jupyter server starts and it is possible to reach the server with the
       suggested instructions:</p>
     <p></p>
@@ -41,13 +41,72 @@
       <li>conda install-c conda-forge pyemma</li>
       <li>pip installmdshare</li>
     </ul>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
+    <h3>PyEMMA protocol</h3>
+    <h3>Setup of the system</h3>
     <p> </p>
-    <p></p>
+    <div id="Instr"> %matplotlib inline<br>
+      import matplotlib.pyplot as plt<br>
+      import numpy as np<br>
+      import pyemma<br>
+      <br>
+      # uncertain<br>
+      <br>
+      from pyemma.util.contexts import settings<br>
+      <br>
+      # for visualization of molecular structures:<br>
+      <br>
+      import nglview<br>
+      import mdtraj<br>
+      from threading import Timer<br>
+      from nglview.player import TrajectoryPlayer<br>
+      <br>
+      # import operative system tools<br>
+      <br>
+      import os<br>
+      <br>
+    </div>
+    <h3>Setting of the topology and trajectory files</h3>
+    <p>It is possible to check the contents of the directory using <i>ls</i>
+      statement and then switch to the correct directory</p>
+    <div id="Instr"> os.chdir('Pep26_wat')<br>
+      os.getcwd()<br>
+    </div>
+    <p>Definition of the topology file</p>
+    <div id="Instr">
+      <pre># define the topology of the system
+top = 'cPep26_1_wat_p.gro'
+</pre> </div>
+    <p>Preparing a file with all trajectories name</p>
+    <div id="Instr">
+      <pre>files=[]
+      
+for f in os.listdir():
+    if '.trr' in f:
+		files.append(f)
+      
+    print (len(files), files)
+</pre> </div>
+    <p> Definition of the featuring topology </p>
+    <div id="Instr">
+      <pre># define features: torsions
+torsions_feat = pyemma.coordinates.featurizer(top)
+</pre> </div>
+    
+    <p>Features addition (torsion angles)</p>
+    <div id="Instr">
+<pre>
+torsions_feat.add_backbone_torsions(cossin=True, periodic=False)
+torsions_feat.add_sidechain_torsions(cossin=True, periodic=False, which='chi1')
+torsions_feat.add_sidechain_torsions(cossin=True, periodic=False, which='chi2')
+torsions_data = pyemma.coordinates.load(files, features=torsions_feat)
+labels = ['torsions']
+data_concatenated = np.concatenate(torsions_data)
+fig, ax = pyemma.plots.plot_feature_histograms(data_concatenated, feature_labels=torsions_feat)
+fig.set_size_inches(11,18)
+</pre>
+
+     </div>
+    
+    
   </body>
 </html>
