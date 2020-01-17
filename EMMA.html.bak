@@ -100,6 +100,9 @@ torsions_feat.add_sidechain_torsions(cossin=True, periodic=False, which='chi1')
 torsions_feat.add_sidechain_torsions(cossin=True, periodic=False, which='chi2')
 torsions_data = pyemma.coordinates.load(files, features=torsions_feat)
 labels = ['torsions']
+data_concatenated = np.concatenate(torsions_data)
+fig, ax = pyemma.plots.plot_feature_histograms(data_concatenated, feature_labels=torsions_feat)
+fig.set_size_inches(11,18)
 </pre>
 
      </div>
