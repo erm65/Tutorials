@@ -82,20 +82,18 @@ top = 'cPep26_1_wat_p.gro'
       
 for f in os.listdir():
     if '.trr' in f:
-		files.append(f)
+    files.append(f)
       
-    print (len(files), files)
+print (len(files), files)
 </pre> </div>
     <p> Definition of the featuring topology </p>
     <div id="Instr">
       <pre># define features: torsions
 torsions_feat = pyemma.coordinates.featurizer(top)
 </pre> </div>
-    
     <p>Features addition (torsion angles)</p>
     <div id="Instr">
-<pre>
-torsions_feat.add_backbone_torsions(cossin=True, periodic=False)
+      <pre>torsions_feat.add_backbone_torsions(cossin=True, periodic=False)
 torsions_feat.add_sidechain_torsions(cossin=True, periodic=False, which='chi1')
 torsions_feat.add_sidechain_torsions(cossin=True, periodic=False, which='chi2')
 torsions_data = pyemma.coordinates.load(files, features=torsions_feat)
@@ -103,10 +101,6 @@ labels = ['torsions']
 data_concatenated = np.concatenate(torsions_data)
 fig, ax = pyemma.plots.plot_feature_histograms(data_concatenated, feature_labels=torsions_feat)
 fig.set_size_inches(11,18)
-</pre>
-
-     </div>
-    
-    
+</pre> </div>
   </body>
 </html>
