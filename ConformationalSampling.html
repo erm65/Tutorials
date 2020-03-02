@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <title>BRMatlab</title>
+  </head>
+  <body>
+    <h1>BRMatlab (v. 0.1)</h1>
+    <p> </p>
+    <h2> Instructions</h2>
+    <p>Launch Matlab</p>
+    <p>Donwload the file <a href="BR_Analysis/ProjBRMatlab.zip" target="_blank">ProjBRMatlab.zip</a></p>
+    <p>Open the zip file in a directory of your choice<br>
+    </p>
+    <ul>
+      <li>List of file in the directory after unzip</li>
+      <ul>
+        <li>BRMatlab_Elab.m</li>
+        <li>BRMatlab_Prepare.m</li>
+        <li>Directory libPLS_1.98 </li>
+      </ul>
+    </ul>
+    <p>In Matlab open the directory with the scripts using the window Current
+      Folder and then add the folder and the subfolder to Matlab path using the
+      mouse right bottom</p>
+    <p>Type in the Command Window</p>
+    <div id="Instr">BRMatlab_Prepare</div>
+    <p>Then choose the descriptor matrix and the response file in the GUI</p>
+    <ul>
+      <li>In the two files the&nbsp; data are separated by ";"</li>
+      <li>Other separators were not tested</li>
+      <li>There are no restrictions about the working directory</li>
+    </ul>
+    <p>BRMatlab_Prepare writes two files in the working directory:</p>
+    <ul>
+      <li>BRMatlab_DataMatrix.csv</li>
+      <ul>
+        <li>It will be read by BRMatlab_Elaborate.m</li>
+        <li>TrainingTest.txt</li>
+        <ul>
+          <li>The file contains the name of the object and a numerical flag</li>
+          <li>In the file the flag is equal to 1</li>
+          <li>Change the flag value to 0 for compounds in the test set</li>
+        </ul>
+      </ul>
+    </ul>
+    <p>BRMatlab_Prepare sets the environment thus it is mandatory to launch the
+      script before proceeding with the elaborate step. When the environment is
+      set it is possible change parameters in the elaboration step.</p>
+    <p>When the test set is defined, type in the Command Window </p>
+    <div id="Instr">BRMatlab_Elab</div>
+    <p>The script runs PLS and performs&nbsp; BR analysis.</p>
+    <p>The cross-validation is performed using LOO method, but it is possible to
+      change to K-fold method modifying the script in the cross validation
+      section. Some options are included and commented with % symbol. The option
+      can be activated removing % and adding a % symbol before instruction K =
+      lenght(YTr). </p>
+    <p>The results are written&nbsp; in a file named BRMatlab_Results.txt</p>
+    <p> </p>
+  </body>
+</html>
