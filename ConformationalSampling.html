@@ -11,23 +11,62 @@
     <h3>Step 1.Setup of the starting 3D structure</h3>
     <h4>Case 1. The structure is downloaded by a X-Ray database (CSD or PDB)</h4>
     <p>Load the structure in a <a href="#Software">software of editing/viewing</a>
-      structures and carefully check if the structure is correct. </p>
-    <p> In particular:</p>
+      structures and carefully check if the structure is correct.Finally, the
+      file should be saved in mol2 format.</p>
+    <h4>Case 2. The structure is build through the SMILES code</h4>
+    <p>The SMILES can could be obtained in two ways:</p>
+    <ul>
+      <li>it can be downloaded from various sources, e.g. ChemSpider</li>
+      <li>the molecule is drawn in MarvinSketch and then is copied as SMILES
+        using the option "Edit - Copy as SMILES".</li>
+    </ul>
+    <p>The code is converted in a 3D structure using CORINA (<a href="https://www.mn-am.com/online_demos/corina_demo">https://www.mn-am.com/online_demos/corina_demo</a>).
+      So far, CORINA represents the most robust SMILES converter. In particular,
+      it is able to efficiently handle chiral symbols.</p>
+    <ul>
+    </ul>
+    <h3>Step 2. Check of the structure</h3>
+    <p> The check of the structure is mandatory and fundamental before
+      submitting the structure to the next steps.</p>
+    <p>In particular, these properties must be checked:</p>
     <ul>
       <li>Bond order</li>
       <li>Atoms valency</li>
       <li>Formal atom charge (and molecule charge)</li>
       <li>Ionization</li>
     </ul>
-    <h4>Case 2. The structure is build through the SMILES code</h4>
-    <p>The SMILES can could be obtained in two ways:</p>
+    <p>Furthermore, it is better to check the name of the molecule and the name
+      of the residue.</p>
+    <p>Two fields should be carefully checked and modified if it is required:</p>
     <ul>
-      <li>can be downloaded from various sources, e.g. ChemSpider, or can be </li>
+      <li>@&lt;TRIPOS&gt;MOLECULE: the name should be checked and modified
+        deleting extensions, directory tree and other not useful names. In
+        principle, the name of the molecule should be identical to the name of
+        the file.</li>
+      <li>@&lt;TRIPOS&gt;ATOM: after the the subs_id, the ID number of the
+        substructure containing the atom, the subs_name should be chosen
+        accordingly to the file name and preferably with three letters. The name
+        should be changed using the "replace" tool in every editor software
+        (e.g. Notepad+). Pay attention to the last field in the file
+        (@&lt;TRIPOS&gt;SUBSTRUCTURE) where the name should be defined and thus
+        it also has to be replaced.</li>
+      <ul>
+        <li>atom_id atom_name x y z atom_type [subst_id [subst_name [charge
+          [status_bit]]]</li>
+      </ul>
+    </ul>
+    <h3>Step 3. First minimization with S</h3>
+    <p><br>
+    </p>
+    <ul>
     </ul>
     <p><br>
     </p>
     <h3><a id="Software">Software of editing and/or viewing</a> </h3>
-    <h5>MOE</h5>
+    <h5>Maestro (to try)</h5>
+    <p>Free version for academics. It is an editing/viewing software.
+      Interestingly, it assigns automatically the bond order to the molecules.</p>
+    <h5>MOE (best avoided)</h5>
     <p>Commercial software that allows viewing and editing of small and big
       molecules.</p>
     <h5>Avogadro 1</h5>
