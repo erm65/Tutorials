@@ -20,14 +20,19 @@
       <li>the molecule is drawn in MarvinSketch and then is copied as SMILES
         using the option "Edit - Copy as SMILES".</li>
     </ul>
-    <p>The code is converted in a 3D structure using CORINA (<a href="https://www.mn-am.com/online_demos/corina_demo">https://www.mn-am.com/online_demos/corina_demo</a>).
-      So far, CORINA represents the most robust SMILES converter. In particular,
-      it is able to efficiently handle chiral symbols.</p>
+    <p>The code is converted in a 3D structure using CORINA (<a href="https://www.mn-am.com/online_demos/corina_demo">https://www.mn-am.com/online_demos/corina_demo</a>)</p>
+    <ul>
+      <li>So far, CORINA represents the most robust SMILES converter</li>
+      <li>In particular, it is able to efficiently handle chiral symbols</li>
+    </ul>
+    <p>In Corina, save the structure as mol file to maintain information about
+      bond order.</p>
     <ul>
     </ul>
     <h3>Step 2. Check of the structure</h3>
     <p> The check of the structure is mandatory and fundamental before
       submitting the structure to the next steps.</p>
+    <p>Use Maestro to load, edit and check the structure.</p>
     <p>In particular, these properties must be checked:</p>
     <ul>
       <li>Bond order</li>
@@ -36,7 +41,7 @@
       <li>Ionization</li>
     </ul>
     <p>Furthermore, it is better to check the name of the molecule and the name
-      of the residue.</p>
+      of the residue loading the structure in an editing software</p>
     <p>Two fields should be carefully checked and modified if it is required:</p>
     <ul>
       <li>@&lt;TRIPOS&gt;MOLECULE: the name should be checked and modified
@@ -62,20 +67,45 @@
       the file is formally correct. Check bond order, charges, names and all it
       was discussed before.</p>
     <p>Minimization of the mol2 file with default parameters, now the dielectric
-      setup is not important yet,</p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <ul>
-    </ul>
-    <p><br>
+      setup is not important yet.</p>
+    <p>Launch Open-Eye application and then run Szybki</p>
+    <div id="Instr"> Szybki -mpi_np 8 -in nomefile.mol2 -out nomefile_sz1.mol2</div>
+    <h3>Step 4. Setup of the final structure file</h3>
+    <p>Finally, Omega i used to establish the final order of the atoms in the
+      mol2 file</p>
+    <p>For linear compounds:</p>
+    <div id="Instr">oeomega classic -mpi_np 8 -in nomefile_sz1.mol2 -out
+      nomefile_oe1.mol2 -maxconfs 1 -maxtime 1 -strictstereo</div>
+    <p>For cyclic compounds</p>
+    <div id="Instr">oeomega macrocycle -mpi_np 8 -in nomefile_sz1.mol2 -out
+      nomefile_oe1.mol2 -maxconfs 1 -maxtime 1 -strictstereo</div>
+    <p>Then check the final mol2<br>
     </p>
     <h3><a id="Software">Software of editing and/or viewing</a> </h3>
     <h5>Maestro (to try)</h5>
     <p>Free version for academics. It is an editing/viewing software.
       Interestingly, it assigns automatically the bond order to the molecules.</p>
-    <h5>MOE (best avoided)</h5>
+    <p><u>Recipes</u></p>
+    <p>Find a 2D a reliable representation of the molecule (e.g. from a paper)</p>
+    <p>Load the molecule in Maestro (e.g. file pdb) clicking <i>File</i> - <i>Import
+        Structures</i></p>
+    <ul>
+      <li>Maestro works in a default directory, so be careful when importing and
+        exporting the structure</li>
+    </ul>
+    <p>Use <i>Workspace Navigator</i> to select the parts of molecule that you
+      wants to delete or select the molecule and then invert selection to delete
+      all it not necessary</p>
+    <p><i>Edit </i>- <i>Assign </i>- <i>Bond </i>order to automatically
+      assign bond order</p>
+    <p>Then, use <i>Build </i>- <i>Draw </i>tool to eventually correct the
+      molecule using the 2D representation as reference</p>
+    <p>Finally, <i>Select </i>- <i>All </i>and <i>Add Hydrogens</i></p>
+    <p><i>File </i>- <i>Export Structures</i> as mol2 file</p>
+    <p>Now, the structure is ready to be processed with an editor software to
+      fix the names of molecule and residues<br>
+    </p>
+    <h5>MOE (best avoided) </h5>
     <p>Commercial software that allows viewing and editing of small and big
       molecules.</p>
     <h5>Avogadro 1</h5>
