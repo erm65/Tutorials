@@ -21,12 +21,16 @@
           </span></a></li>
       <li><span style=" color: #0000ee;"><a href="MD_PlainRunWater.html">MD:
             Plain run</a><br>
-	  <li><span style=" color: #0000ee;"><a href="MD_SetupRunInSolvent.html">MD:
-            Plain run in solvent</a><br>		
-       </span></li>
+        </span></li>
+      <li><span style=" color: #0000ee;"><a href="MD_SetupRunInSolvent.html">MD:
+            Plain run in solvent</a><br>
+        </span></li>
       <a href="Matlab_scripts.html"> </a>
       <li><a href="EMMA.html">PyEMMA</a></li>
       <li><a href="PyMol.html" title="PyMol">PyMol</a></li>
+      <li><a href="SpartanCharges.html"><span
+
+            style="color: #0000ee;">Charges calculations</span></a></li>
     </ul>
     <ul>
     </ul>
@@ -43,7 +47,8 @@
     <p><a href="https://ryanstutorials.net/linuxtutorial/">Linux Tutorial<br>
       </a></p>
     <h4>M</h4>
-    <p><a href="https://guides.github.com/features/mastering-markdown/" title="Mastering Markdown"
+    <p><a href="https://guides.github.com/features/mastering-markdown/" title="Mastering Markdown"
+
         target="_blank">Mastering Markdown</a></p>
     <p><br>
     </p>
