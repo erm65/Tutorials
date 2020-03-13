@@ -11,7 +11,7 @@
     <h3>Step 1.Setup of the starting 3D structure</h3>
     <h4>Case 1. The structure is downloaded by a X-Ray database (CSD or PDB)</h4>
     <p>Load the structure in a <a href="#Software">software of editing/viewing</a>
-      structures and carefully check if the structure is correct.Finally, the
+      structures and carefully check if the structure is correct. Finally, the
       file should be saved in mol2 format.</p>
     <h4>Case 2. The structure is build through the SMILES code</h4>
     <p>The SMILES can could be obtained in two ways:</p>
@@ -45,15 +45,25 @@
         the file.</li>
       <li>@&lt;TRIPOS&gt;ATOM: after the the subs_id, the ID number of the
         substructure containing the atom, the subs_name should be chosen
-        accordingly to the file name and preferably with three letters.</li>
+        accordingly to the file name and preferably with three letters. The name
+        should be changed using the "replace" tool in every editor software
+        (e.g. Notepad+). Pay attention to the last field in the file
+        (@&lt;TRIPOS&gt;SUBSTRUCTURE) where the name should be defined and thus
+        it also has to be replaced.</li>
       <ul>
         <li>atom_id atom_name x y z atom_type [subst_id [subst_name [charge
           [status_bit]]]</li>
       </ul>
     </ul>
-    <p> <br>
+    <h3>Step 3. First minimization with Szybki</h3>
+    <p>The goal of this step is the setup of a correct and minimized structure
+      that will be the starting point of the next steps. It is important that
+      this structure is careful checked from a chemical point of view and that
+      the file is formally correct. Check bond order, charges, names and all it
+      was discussed before.</p>
+    <p><br>
     </p>
-    <p>Step 3. First minimization with S<br>
+    <p><br>
     </p>
     <ul>
     </ul>
