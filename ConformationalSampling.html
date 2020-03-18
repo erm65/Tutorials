@@ -8,17 +8,21 @@
   <body>
     <h1>Conformational sampling</h1>
     <h2> Instructions</h2>
+    <p>Run the "<i>OpenEye-Applications Ver</i>" command line</p>
     <h3>Step 1.Setup of the starting 3D structure</h3>
     <h4>Case 1. The structure is downloaded by a X-Ray database (CSD or PDB)</h4>
-    <p>Load the structure in a <a href="#Software">software of editing/viewing</a>
-      structures and carefully check if the structure is correct. Finally, the
-      file should be saved in mol2 format.</p>
+    <p>Run Maestro</p>
+    <p>Select&nbsp; a convenient working directory: <i>File </i>- <i>Change
+        Working Directory</i> and select the directory</p>
+    <p>Import starting structures: <i>File </i>- <i>Import Structures</i></p>
+    <p>Carefully check if the structure is correct and eventually use edit tools
+      to correct the structure and delete not useful atoms (e.g. solvent) </p>
     <h4>Case 2. The structure is build through the SMILES code</h4>
-    <p>The SMILES can could be obtained in two ways:</p>
+    <p>The SMILES can be obtained in two ways:</p>
     <ul>
       <li>it can be downloaded from various sources, e.g. ChemSpider</li>
       <li>the molecule is drawn in MarvinSketch and then is copied as SMILES
-        using the option "Edit - Copy as SMILES".</li>
+        using the option <i>Edit </i>- <i>Copy as SMILES</i>.</li>
     </ul>
     <p>The code is converted in a 3D structure using CORINA (<a href="https://www.mn-am.com/online_demos/corina_demo">https://www.mn-am.com/online_demos/corina_demo</a>)</p>
     <ul>
@@ -60,6 +64,12 @@
           [status_bit]]]</li>
       </ul>
     </ul>
+    <p>When the structure is edited, export the file as mol2 format: <i>File </i>-
+      <i>Export Structures</i></p>
+    <ul>
+      <ul>
+      </ul>
+    </ul>
     <h3>Step 3. First minimization with Szybki</h3>
     <p>The goal of this step is the setup of a correct and minimized structure
       that will be the starting point of the next steps. It is important that
@@ -68,19 +78,49 @@
       was discussed before.</p>
     <p>Minimization of the mol2 file with default parameters, now the dielectric
       setup is not important yet.</p>
-    <p>Launch Open-Eye application and then run Szybki</p>
-    <div id="Instr"> Szybki -mpi_np 8 -in nomefile.mol2 -out nomefile_sz1.mol2</div>
+    <p>In the "<i>OpenEye-Applications Ver</i>" command line, run Szybki</p>
+    <div id="Instr"> Szybki -mpi_np 8 -in filename.mol2 -out filename_sz.mol2
+      -prefix filename_sz</div>
     <h3>Step 4. Setup of the final structure file</h3>
-    <p>Finally, Omega i used to establish the final order of the atoms in the
-      mol2 file</p>
+    <p>The file prepared in Step 3 is submitted to Omega for the conformational
+      sampling.</p>
+    <p>The dielectric constant should be set on the basis of the explored
+      environment. Some useful values are the following:</p>
+    <ul>
+      <li>water (wat): 80</li>
+      <li>dmso (dms): 47</li>
+      <li>methanol (met): 32.6</li>
+      <li>acetonitrile (acn): 21.01</li>
+      <li>chloroform (chl): 4.81</li>
+      <li>1,4-dioxane (dxa): 2.21</li>
+      <li>cyclohexane (hex): 2.02</li>
+    </ul>
     <p>For linear compounds:</p>
-    <div id="Instr">oeomega classic -mpi_np 8 -in nomefile_sz1.mol2 -out
-      nomefile_oe1.mol2 -maxconfs 1 -maxtime 1 -strictstereo</div>
+    <div id="Instr">oeomega classic -mpi_np 8 -searchff mmff94s -dielectric
+      80&nbsp;-ewindow 10 -strict -in filename_sz.mol2 -out filename_oe.mol2
+      -prefix nomefile_oe</div>
     <p>For cyclic compounds</p>
-    <div id="Instr">oeomega macrocycle -mpi_np 8 -in nomefile_sz1.mol2 -out
-      nomefile_oe1.mol2 -maxconfs 1 -maxtime 1 -strictstereo</div>
-    <p>Then check the final mol2<br>
-    </p>
+    <div id="Instr">oeomega macrocycle -mpi_np 8 -dielectric_constant 80
+      -ewindow 20 -in filename_sz.mol2 -out filename_oe.mol2 -prefix nomefile_oe</div>
+    <p>Then the conformations are definitively minimized submitting the Omega
+      the output to Szybki. This software also calculates and writes the final
+      energy of the conformers.</p>
+    <div id="Instr">szybki -mpi_np 8 -solv_dielectric 80 -ff mmff94s -solventPB
+      -solventCA 0.005 -prefix filename -in filename_oe.mol2 -out
+      filename_oe_sz.mol2 -report</div>
+    <p>Furthermore, Szybki writes the final energy of the conformations in a
+      report (extension .rpt) that will bu used for the final report.</p>
+    <h3>Step 5. Table preparation</h3>
+    <p>Run Vega</p>
+    <p>In Vega: <i>File </i>- <i>Open </i>and select filename_oe_sz.mol2</p>
+    <p>The file mol2 is uploaded in Vega and the "<i>Analysis of the trajectory</i>"
+      window is opened</p>
+    <p>In the "<i>Analysis of the trajectory</i>" window, select a property
+      (Polar surface area, PSA; Gyration radius and Molecular Lipophilicity
+      Potentials to calculate the Virtual Log P) and click <i>ok </i>button.</p>
+    <p>Vega calculates and plots the property</p>
+    <p>Click on <i>"Save as csv file</i>" to save the results.</p>
+    <p>Import the results in Excel and merge with the energy output of Szybki.</p>
     <h3><a id="Software">Software of editing and/or viewing</a> </h3>
     <h5>Maestro (to try)</h5>
     <p>Free version for academics. It is an editing/viewing software.
