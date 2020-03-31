@@ -107,7 +107,7 @@
       energy of the conformers.</p>
     <div id="Instr">szybki -mpi_np 8 -solv_dielectric 80 -ff mmff94s -solventPB
       -solventCA 0.005 -prefix filename -in filename_oe.mol2 -out
-      filename_oe_sz.mol2 -report -sdtag all</div>
+      filename_oe_sz.mol2 -report</div>
     <p>Furthermore, Szybki writes the final energy of the conformations in a
       report (extension .rpt) that will bu used for the final report.</p>
     <h3>Step 5. Table preparation</h3>
