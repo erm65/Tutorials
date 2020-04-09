@@ -66,6 +66,14 @@
     </ul>
     <p>When the structure is edited, export the file as mol2 format: <i>File </i>-
       <i>Export Structures</i></p>
+    <p>Finally, the checked structure is saved in a file mol.mol2, where <i>mol
+      </i>is the name of the molecule. </p>
+    <p>The name <i>mol </i>will be kept for all steps thus a short name should
+      be chosen. Furthermore, the <i>mol </i>name should be also abbreviated
+      with a 3 letters short name that will be saved in the Tripos MOLECULE
+      field and will be used in the subs_name field in the ATOM lines (the field
+      where the name of the amino acids are reported) into the mol2 file.<br>
+    </p>
     <ul>
       <ul>
       </ul>
@@ -79,14 +87,16 @@
     <p>Minimization of the mol2 file with default parameters, now the dielectric
       setup is not important yet.</p>
     <p>In the "<i>OpenEye-Applications Ver</i>" command line, run Szybki</p>
-    <div id="Instr"> Szybki -mpi_np 8 -in filename.mol2 -out filename_sz.mol2
-      -prefix filename_sz</div>
+    <div id="Instr"> Szybki -mpi_np 8 -in mol.mol2 -out mol_sz.mol2 -prefix
+      mol_sz</div>
     <h3>Step 4. Setup of the final structure file</h3>
     <p>The file prepared in Step 3 is submitted to Omega for the conformational
       sampling.</p>
     <p>The dielectric constant should be set on the basis of the explored
       environment. Some useful values are the following:</p>
     <ul>
+      <li>solvent (solv, short name that should be used in the next steps):
+        dielectric constants</li>
       <li>water (wat): 80</li>
       <li>dmso (dms): 47</li>
       <li>methanol (met): 32.6</li>
@@ -95,19 +105,19 @@
       <li>1,4-dioxane (dxa): 2.21</li>
       <li>cyclohexane (hex): 2.02</li>
     </ul>
-    <p>For linear compounds:</p>
+    <p>For linear compounds in a certain solvent (solv), here water:</p>
     <div id="Instr">oeomega classic -mpi_np 8 -searchff mmff94s -dielectric
-      80&nbsp;-ewindow 10 -strict -in filename_sz.mol2 -out filename_oe.mol2
-      -prefix nomefile_oe</div>
+      80&nbsp;-ewindow 10 -strict -in mol_sz.mol2 -out mol_wat_oe.mol2 -prefix
+      mol_wat_oe</div>
     <p>For cyclic compounds</p>
     <div id="Instr">oeomega macrocycle -mpi_np 8 -dielectric_constant 80
-      -ewindow 20 -in filename_sz.mol2 -out filename_oe.mol2 -prefix nomefile_oe</div>
+      -ewindow 20 -in mol_sz.mol2 -out mol_wat_oe.mol2 -prefix mol_wat_oe</div>
     <p>Then the conformations are definitively minimized submitting the Omega
       the output to Szybki. This software also calculates and writes the final
       energy of the conformers.</p>
     <div id="Instr">szybki -mpi_np 8 -solv_dielectric 80 -ff mmff94s -solventPB
-      -solventCA 0.005 -prefix filename -in filename_oe.mol2 -out
-      filename_oe_sz.mol2 -report</div>
+      -solventCA 0.005 -prefix mol_wat_fin -in mol_wat_oe.mol2 -out mol_wat_fin.mol2
+      -report</div>
     <p>Furthermore, Szybki writes the final energy of the conformations in a
       report (extension .rpt) that will bu used for the final report.</p>
     <h3>Step 5. Table preparation</h3>
@@ -121,6 +131,8 @@
     <p>Vega calculates and plots the property</p>
     <p>Click on <i>"Save as csv file</i>" to save the results.</p>
     <p>Import the results in Excel and merge with the energy output of Szybki.</p>
+    <p><br>
+    </p>
     <h3><a id="Software">Software of editing and/or viewing</a> </h3>
     <h5>Maestro (to try)</h5>
     <p>Free version for academics. It is an editing/viewing software.
@@ -145,20 +157,6 @@
     <p>Now, the structure is ready to be processed with an editor software to
       fix the names of molecule and residues<br>
     </p>
-    <h5>MOE (best avoided) </h5>
-    <p>Commercial software that allows viewing and editing of small and big
-      molecules.</p>
-    <h5>Avogadro 1</h5>
-    <p>Software that allows viewing and editing of small molecules.</p>
-    <h5>Chimera</h5>
-    <p>Chimera allows viewing and editing.It can be used to clean the file, e.g.
-      it is possible to delete the protein portion of the file.</p>
-    <h4>Vega</h4>
-    <p>Vega allows a complete editing, e.g. it is possible to change the bond
-      order</p>
-    <h4>Vida</h4>
-    <p>Vida is useful when the editing is not mandatory and it a visual check is
-      sufficient.</p>
     <p> </p>
   </body>
 </html>
