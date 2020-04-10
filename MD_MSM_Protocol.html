@@ -9,12 +9,202 @@
     <h1>MD MSM Protocol</h1>
     <h2>Parametrization of organic molecules</h2>
     <p>The parametrization is not required for peptides.</p>
-    <p>The minimum energy conformer is extracted from </p>
-    <br>
+    <p>The parametrization is carried out on the minimum energy conformer (MEC)
+      resulting from Omega conformational sampling after the minimization with
+      Szybki.</p>
+    <p>The parametrization is carried out with acpype tool.</p>
+    <h3>acpype on site</h3>
+    <p>Set up of the environment</p>
+    <div id="Instr">source /home/germondi/gromacs_setup.source</div>
+    <p> </p>
+    <p>In the setup file the commands are the following</p>
+    <div id="Instr"># GROMACS environment export PATH=/opt/gromacs/bin:$PATH<br>
+      <br>
+      # VMD environment (from BiKi)<br>
+      export PATH=/opt/biki/BiKiLifeSciences/vmd-1.9.2/vmd_bin/:$PATH<br>
+      <br>
+      # Babel setup (installation in user directory)<br>
+      export PATH=/opt/openbabel/openbabel-openbabel-2-4-0/bin:$PATH<br>
+      export BABEL_LIBDIR=/opt/openbabel/openbabel-openbabel-2-4-0/lib<br>
+      export BABEL_DATADIR=/opt/openbabel/openbabel-openbabel-2-4-0/data<br>
+      <br>
+      # acpype (and Antechamber) environment<br>
+      export PATH=/home/germondi/acpype/scripts:$PATH<br>
+      export PATH=/home/germondi/acpype/amber19-0_linux/bin:$PATH<br>
+      export PATH=/home/germondi/acpype/amber19-0_linux/dat:$PATH<br>
+      export PATH=/home/germondi/acpype/amber19-0_linux/lib:$PATH<br>
+    </div>
+    <p></p>
+    <p></p>
+    <p>Copy the file with the MEC coordinates (<i>mol_solv_final_mec.mol2</i>)
+      in the working directory and then submit it to acpype</p>
+    <div id="Instr">acpype.py -i <i>mol_solv_final_mec.mol2</i> -b ach -n
+      molcharge</div>
+    <p>Where molcharge is the charge of the molecule.</p>
+    <p>The output is saved in a directory <i>mol_solv_final_mec.acpype</i>.</p>
+    <p>Files that we are looking for are the files with the GAFF
+      parametrization:</p>
+    <ul>
+      <li>mol_solv_final_GMX.itp</li>
+      <li>mol_solf_final_GMX.top</li>
+    </ul>
+    <h3>acpype on-line</h3>
+    <p>Open an Ineternet browser and then go to the <a href="http://bio2byte.be/acpype/"
+        target="_blank">Bio2Bite </a>web site (a registration is required)</p>
+    <p>Click on the submit link, login with your credentials and then load <i>mol_solv_final_mec.mol2</i></p>
+    <p>Select the correct charge and submit. </p>
+    <p>You will receive a mail when the parametrization is finished.</p>
+    <p>Download and unzip the file with the results, a directory acpype is
+      created with all the needed files, in particular:</p>
+    <ul>
+      <li>mol_solv_final_GMX.itp</li>
+      <li>mol_solf_final_GMX.top</li>
+    </ul>
+    <h3>Topology test</h3>
+    <p>Copy the two files mentioned above to a new directory <i>test_top_mol </i>with
+      <i>mol_solv_final_mec.mol2</i></p>
+    <p>Create a file em.mdp to test the topology with a minimization. The file
+      has to contain the following instructions:</p>
+    <div id="Instr">; Parameters describing what to do, when to stop and what to
+      save<br>
+      integrator&nbsp; = steep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;
+      Algorithm (steep = steepest descent minimization)<br>
+      emtol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1000.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Stop minimization when
+      the maximum force &lt; 1000.0 kJ/mol/nm<br>
+      emstep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      0.01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Minimization
+      step size<br>
+      nsteps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      50000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Maximum number of
+      (minimization) steps to perform<br>
+      <br>
+      ; Parameters describing how to find the neighbors of each atom and how to
+      calculate the interactions<br>
+      nstlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Frequency to update
+      the neighbor list and long range forces<br>
+      cutoff-scheme&nbsp;&nbsp; = Verlet&nbsp;&nbsp;&nbsp; ; Buffered neighbor
+      searching<br>
+      ns_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      grid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Method to determine neighbor list
+      (simple, grid)<br>
+      coulombtype&nbsp;&nbsp;&nbsp;&nbsp; =
+      PME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Treatment of long range
+      electrostatic interactions<br>
+      rcoulomb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Short-range electrostatic
+      cut-off<br>
+      rvdw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Short-range Van der Waals
+      cut-off<br>
+      pbc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = xyz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Periodic Boundary Conditions
+      in all 3 dimensions
+      <p></p>
+    </div>
+    <p></p>
+    <p>Now we test the topology using the original mol2 file to be sure that
+      there will be no problems when other conformations will be used</p>
+    <div id="Instr">obabel -imol2 <i>mol_solv_final_mec.mol2</i> -opdb -O <i>mol_solv_final_mec.pdb</i><br>
+      gmx editconf -f <i>mol_solv_final_mec.pdb</i> -o <i>mol_test.gro</i> -bt
+      cubic -d 0.5</div>
+    <p>Now run the minimization with Gromacs</p>
+    <div id="Instr">gmx grompp -f em.mdp -c ach_test.gro -p
+      ach_wat_fin_mec_GMX.top -o em.tpr -v<br>
+      gmx mdrun -ntmpi 1 -v -deffnm em</div>
+    <p>If grompp exits with an error about a cut-off, the box dimensions has to
+      be increased until the procedure finishes without errors (i.e. change -d
+      0.5 to -d 1.0 or larger values)</p>
+    <p> Check em.gro with VMD to be sure that all is ok</p>
+    <div id="Instr">vmd em.gro</div>
+    <p>From the VMD console:</p>
+    <div id="Instr">pbd box_draw</div>
+    <p>Check the dimensions of the box to be sure that the molecule is well
+      positioned.</p>
+    <p>If all is ok, move to the next step.</p>
+    <h4>MD setup in a box of water</h4>
+    <p>Create a new directory mol_wat_setup and copy herein the following files
+      from the test directory</p>
+    <ul>
+      <li>mol_solv_final_GMX.itp</li>
+      <li>mol_solf_final_GMX.top</li>
+      <li>mol_test.gro</li>
+    </ul>
+    <p>Solvate the molecule with water</p>
+    <div id="Instr">gmx solvate -cp ach_test.gro -o ach_test_wat.gro -p
+      ach_wat_fin_mec_GMX.top</div>
+    <ul>
+      <li>Check the result with VMD</li>
+    </ul>
+    <p>The topology (.top) file is updated with the addition of a new row in [
+      molecules ] section</p>
+    <p>Edit the topology file </p>
+    <ul>
+      <li>delete [ defaults ] section</li>
+      <li>insert itp information about deafult ff, water model (tip3p) and ions
+        (even if it is necessary only for charged molecules) </li>
+    </ul>
+    <p></p>
+    <div id="Instr">; ach_wat_fin_mec_GMX.top created by acpype (v:
+      2019-07-10T18:04:00UTC) on Fri Apr 10 12:05:13 2020<br>
+      <br>
+      ; Include default ff<br>
+      #include "amber99sb.ff/forcefield.itp"<br>
+      <br>
+      ; Include mol_solv_fin_mec_GMX.itp topology<br>
+      #include "mol_solv_fin_mec_GMX.itp"<br>
+      <br>
+      ; Include the water model<br>
+      #include "amber99sb.ff/tip3p.itp"<br>
+      <br>
+      ; Include ions (not alway necessary)<br>
+      #include "amber99sb.ff/ions.itp"
+      <p></p>
+    </div>
+    <ul>
+      <li> The order is mandatory because forcefield.itp contains the [ defaults
+        ] section that must be unique whereas the topology file of our molecule
+        has a section [ atomtypes ] to define new atoms that must be located
+        before the definitions of other molecules. </li>
+    </ul>
+    <p>Prepare the file tpr that will be directly used in the minimization for
+      neutral molecules whereas it is used to add ion(s) when the molecule is
+      charged</p>
+    <p></p>
+    <div id="Instr">gmx grompp -f em.mdp -c mol_test_wat.gro -p
+      mol_wat_fin_mec_GMX.top -o em.tpr</div>
+    <p>Now <b>if the molecule is ionized</b>, it is mandatory to balance the
+      number of charges by the addition of a counter ion, To add ions, the file
+      tpr is required</p>
+    <div id="Instr">gmx genion -s em.tpr -o mol_test_wat_fin.gro -p
+      ach_GMX_1.top -pname NA -nname CL -neutral</div>
+    <ul>
+      <li>Select SOL option</li>
+    </ul>
+    <p>Check the resulting gro file to be sure that ion(s) was(were) added and
+      check that topology was modified according to the added ion(s)</p>
+    <p>If ions were added, rebuild the tpr file</p>
+    <div id="Instr">gmx grompp -f em.mdp -c mol_test_wat.gro -p
+      mol_wat_fin_mec_GMX.top -o em.tpr</div>
+    <p>and run the test minimization</p>
+    <div id="Instr">gmx mdrun -ntmpi 1 -v -deffnm em</div>
+    <p>Check the output em.gro with VMD</p>
+    <p>Check the result with VMD</p>
     <p><br>
     </p>
-    <div id="Instr">b</div>
-    <br>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <p><br>
+    </p>
+    <p><i><br>
+      </i></p>
+    <p><br>
+    </p>
     <p>From menus: <i>Tools </i>- <i>MD/Ensemble Analysis</i> - <i>MD Movie</i>
     </p>
     <ol>
