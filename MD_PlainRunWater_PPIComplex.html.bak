@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>MD: Plain run for a PPI complex in water</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <h1>MD: Plain run</h1>
+    <h2>Introduction</h2>
+    <p>How setup a MD simulation in water for a PPI complex.</p>
+    <p>Instructions based on the <a href="http://www.mdtutorials.com/gmx/lysozyme/index.html"
+
+        title="LysozimeGROMACSTutorial">Lysozime in Water GROMACS tutorial</a>.</p>
+    <h2>Setup of the environment</h2>
+    <p>Open a terminal in the server (this instruction depend on the
+      configuration of the server)</p>
+    <div id="Instr">term&gt;module load cuda/cuda-9.1</div>
+    <p>Setup the environment of the terminal </p>
+    <div id="Instr">term&gt; export PATH=/opt/gromacs/bin:$PATH<br>
+      term&gt; export PATH=/opt/biki/BiKiLifeSciences/vmd-1.9.2/vmd_bin/:$PATH<br>
+    </div>
+    <p>If a setup file is present it is possible to use the instruction <i>source
+        </i></p>
+    <div id="Instr">source $HOME/gromacs_setup.source</div>
+    <p>In this case the setup file is located in the HOME directory and is named
+      gromacs_setup.source</p>
+    <p>If a modulefile is present</p>
+    <div id="Instr">module load ge/gromacs</div>
+    <h2>Setup of the system</h2>
+    <p>The starting structure can be downloaded from the PDB database or can be
+      the result of PPI building sites.</p>
+    <ul>
+      <li>Use pdb format</li>
+      <li>The protein will be completed using GROMACS tools, thus it is better
+        to use a file without any hydrogen atoms but GROMACS tools can ignore
+        hydrogen atoms</li>
+    </ul>
+    <p>Prepare gro file from pdb file.</p>
+    <ul>
+    </ul>
+    <div id="Instr">gmx pdb2gmx -ignh -f model_4_MinChimera.pdb -o model_4.gro
+      -water spce</div>
+    <p>Select the FF that will be used by GROMACS</p>
+    <ul>
+      <li>I usually use AMBER99SB that is used by ACTYPE tool</li>
+      <li>In lysozime tutorial is suggested OPLS-AA (<span style="color: red;">a
+          deeper analysis ìs required</span>)</li>
+    </ul>
+    <p>The topology file is created.</p>
+    <div id="Instr">gmx editconfig -f model_4.gro -o model_4_box.gro -c -d 1.0
+      -bt cubic</div>
+    <p>The box is prepared and the length of the cubic box is fixed.</p>
+    <div id="Instr">gmx solvate -cp model_4_box.gro -cs spc216.gro -o
+      model_4_solv.gro -p topol.top</div>
+    <p>The solvated box is prepared.</p>
+    <p>Now, it is possible to check is the dimension of the box and the number
+      of water molecule is convenient to avoid long calculation. It is possible
+      to view the system with VMD and check if the box if too large and then
+      repeat editconf and solvate to obtain a convenient system. For example,
+      the box dimensions can be fixed using -box flag followed by the dimensions
+      in nm.</p>
+    <div id="Instr">gmx editconf -f model_4.gro -o model_4_box.gro -c -d 1.0
+      -box 8.0 8.0 8.0<br>
+      gmx solvate -cp model_4_box.gro -cs spc216.gro -o model_4_solv.gro -p
+      topol.top</div>
+    <p> Finally positive and negative ions have to be added to neutralize the
+      system</p>
+    <div id="Instr">gmx grompp -f ions.mdp -c model_4_solv.gro -p topol.top -o
+      ions.tpr<br>
+      gmx genion -s ions.tpr -o model_4_solv_ions.gro -p topol.top -pname NA
+      -nname CL -neutral</div>
+    <p>Choose the option 13.</p>
+    <p>The ions.mdp is a script only used for the preparation of the file to
+      submit to the ion addition</p>
+    <p>ions.mdp</p>
+    <div id="Instr">; ions.mdp - used as input into grompp to generate ions.tpr<br>
+      ; Parameters describing what to do, when to stop and what to save<br>
+      integrator&nbsp; = steep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;
+      Algorithm (steep = steepest descent minimization)<br>
+      emtol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1000.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Stop minimization when
+      the maximum force &lt; 1000.0 kJ/mol/nm<br>
+      emstep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      0.01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Minimization
+      step size<br>
+      nsteps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      50000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Maximum number of
+      (minimization) steps to perform<br>
+      <br>
+      ; Parameters describing how to find the neighbors of each atom and how to
+      calculate the interactions<br>
+      nstlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Frequency to update
+      the neighbor list and long range forces<br>
+      cutoff-scheme&nbsp;&nbsp;&nbsp; = Verlet&nbsp;&nbsp;&nbsp; ; Buffered
+      neighbor searching <br>
+      ns_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      grid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Method to determine neighbor list
+      (simple, grid)<br>
+      coulombtype&nbsp;&nbsp;&nbsp;&nbsp; = cutoff&nbsp;&nbsp;&nbsp; ; Treatment
+      of long range electrostatic interactions<br>
+      rcoulomb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Short-range electrostatic
+      cut-off<br>
+      rvdw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Short-range Van der Waals
+      cut-off<br>
+      pbc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = xyz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Periodic Boundary Conditions
+      in all 3 dimensions</div>
+    <h2>Setup of the MD protocol </h2>
+    <h3>Minimization step</h3>
+    <div id="Instr">gmx grompp -f minim.mdp -c model_4_solv_ions.gro -p
+      topol.top -o em <br>
+      gmx mdrun -v -deffnm em -cpt 1 -cpo em_restart.cpt</div>
+    <p>minim.mdp</p>
+    <div id="Instr">; minim.mdp - used as input into grompp to generate em.tpr<br>
+      ; Parameters describing what to do, when to stop and what to save<br>
+      integrator&nbsp; = steep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;
+      Algorithm (steep = steepest descent minimization)<br>
+      emtol&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1000.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Stop minimization when
+      the maximum force &lt; 1000.0 kJ/mol/nm<br>
+      emstep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      0.01&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Minimization
+      step size<br>
+      nsteps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      50000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Maximum number of
+      (minimization) steps to perform<br>
+      <br>
+      ; Parameters describing how to find the neighbors of each atom and how to
+      calculate the interactions<br>
+      nstlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      20&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Frequency to update
+      the neighbor list and long range forces<br>
+      cutoff-scheme&nbsp;&nbsp; = Verlet&nbsp;&nbsp;&nbsp; ; Buffered neighbor
+      searching<br>
+      ns_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      grid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Method to determine neighbor list
+      (simple, grid)<br>
+      coulombtype&nbsp;&nbsp;&nbsp;&nbsp; =
+      PME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Treatment of long range
+      electrostatic interactions<br>
+      rcoulomb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Short-range electrostatic
+      cut-off<br>
+      rvdw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Short-range Van der Waals
+      cut-off<br>
+      pbc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = xyz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Periodic Boundary Conditions
+      in all 3 dimensions</div>
+    <p>Check the energy.</p>
+    <div id="Instr">gmx energy -f em.edr -o potential.xvg</div>
+    <p> </p>
+    At the prompt, select Potential (10); zero (0) terminates input and then
+    view the results with xmgrace<br>
+    <div id="Instr">xmgrace potential.xvg</div>
+    <h2> Run the MD </h2>
+    <h3>Equilibration steps</h3>
+    <p> The first equilibration step (nvt) stabilizes the temperature of the
+      system.</p>
+    <p> </p>
+    <div id="Instr">gmx grompp -f nvt.mdp -c em.gro -r em.gro -p topol.top -o
+      nvt<br>
+      gmx mdrun -deffnm nvt -nb gpu</div>
+    <ul>
+      <li>the flag nb is used to use gpu in the calculaton of non bond energy</li>
+    </ul>
+    <p>nvt.mdp</p>
+    <div id="Instr">title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = VSP9&nbsp; NVT equilibration <br>
+      define&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = -DPOSRES&nbsp; ; position restrain the protein<br>
+      ; Run parameters<br>
+      integrator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; leap-frog integrator<br>
+      nsteps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 50000&nbsp;&nbsp;&nbsp;&nbsp; ; 2 * 50000 = 100 ps<br>
+      dt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 0.002&nbsp;&nbsp;&nbsp;&nbsp; ; 2 fs<br>
+      ; Output control<br>
+      nstxout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 500&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; save coordinates every 1.0 ps<br>
+      nstvout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 500&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; save velocities every 1.0 ps<br>
+      nstenergy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 500&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; save energies every 1.0 ps<br>
+      nstlog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 500&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; update log file every 1.0 ps<br>
+      ; Bond parameters<br>
+      continuation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = no&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; first dynamics run<br>
+      constraint_algorithm&nbsp;&nbsp;&nbsp; = lincs&nbsp;&nbsp;&nbsp;&nbsp; ;
+      holonomic constraints <br>
+      constraints&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = h-bonds&nbsp;&nbsp; ; bonds involving H are constrained<br>
+      lincs_iter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; accuracy of LINCS<br>
+      lincs_order&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; also related to
+      accuracy<br>
+      ; Nonbonded settings <br>
+      cutoff-scheme&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = Verlet&nbsp;&nbsp;&nbsp; ; Buffered neighbor searching<br>
+      ns_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = grid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; search neighboring grid cells<br>
+      nstlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 20 fs, largely irrelevant
+      with Verlet<br>
+      rcoulomb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; short-range electrostatic
+      cutoff (in nm)<br>
+      rvdw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; short-range van der Waals
+      cutoff (in nm)<br>
+      DispCorr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = EnerPres&nbsp; ; account for cut-off vdW scheme<br>
+      ; Electrostatics<br>
+      coulombtype&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = PME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Particle Mesh Ewald for
+      long-range electrostatics<br>
+      pme_order&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; cubic interpolation<br>
+      fourierspacing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+      0.16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; grid spacing for FFT<br>
+      ; Temperature coupling is on<br>
+      tcoupl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      =
+      V-rescale&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      ; modified Berendsen thermostat<br>
+      tc-grps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = Protein Non-Protein&nbsp;&nbsp; ; two coupling groups - more accurate<br>
+      tau_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 0.1&nbsp;&nbsp;&nbsp;&nbsp;
+      0.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; time
+      constant, in ps<br>
+      ref_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 300&nbsp;&nbsp;&nbsp;&nbsp;
+      300&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;
+      reference temperature, one for each group, in K<br>
+      ; Pressure coupling is off<br>
+      pcoupl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = no&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; no pressure coupling in
+      NVT<br>
+      ; Periodic boundary conditions<br>
+      pbc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = xyz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 3-D PBC<br>
+      ; Velocity generation<br>
+      gen_vel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; assign velocities from Maxwell
+      distribution<br>
+      gen_temp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = 300&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; temperature for Maxwell
+      distribution<br>
+      gen_seed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      = -1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; generate a random seed </div>
+    <div>
+      <p>Check the temperature with gmx energy tool.</p>
+    </div>
+    <div>
+      <p>The second equilibration step (npt) stabilizes the pressure of the
+        sytem.</p>
+      <div id="Instr">gmx grompp -f npt.mdp -c nvt.gro -r nvt.gro -t nvt.cpt -p
+        topol.top -o npt <br>
+        gmx mdrun -deffnm npt -nb gpu</div>
+      <p>npd.mdp</p>
+      <div id="Instr">title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = VSP9 NPT equilibration <br>
+        define&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = -DPOSRES&nbsp; ; position restrain the protein<br>
+        ; Run parameters<br>
+        integrator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; leap-frog integrator<br>
+        nsteps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 50000&nbsp;&nbsp;&nbsp;&nbsp; ; 2 * 50000 = 100 ps<br>
+        dt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 0.002&nbsp;&nbsp;&nbsp;&nbsp; ; 2 fs<br>
+        ; Output control<br>
+        nstxout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 500&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; save coordinates every 1.0
+        ps<br>
+        nstvout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 500&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; save velocities every 1.0 ps<br>
+        nstenergy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 500&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; save energies every 1.0 ps<br>
+        nstlog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 500&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; update log file every 1.0 ps<br>
+        ; Bond parameters<br>
+        continuation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restarting after NVT <br>
+        constraint_algorithm&nbsp;&nbsp;&nbsp; = lincs&nbsp;&nbsp;&nbsp;&nbsp; ;
+        holonomic constraints <br>
+        constraints&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = h-bonds&nbsp;&nbsp; ; bonds involving H are constrained<br>
+        lincs_iter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; accuracy of LINCS<br>
+        lincs_order&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; also related to
+        accuracy<br>
+        ; Nonbonded settings <br>
+        cutoff-scheme&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = Verlet&nbsp;&nbsp;&nbsp; ; Buffered neighbor searching<br>
+        ns_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = grid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; search neighboring grid cells<br>
+        nstlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 20 fs, largely
+        irrelevant with Verlet scheme<br>
+        rcoulomb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; short-range electrostatic
+        cutoff (in nm)<br>
+        rvdw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; short-range van der Waals
+        cutoff (in nm)<br>
+        DispCorr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = EnerPres&nbsp; ; account for cut-off vdW scheme<br>
+        ; Electrostatics<br>
+        coulombtype&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = PME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Particle Mesh Ewald for
+        long-range electrostatics<br>
+        pme_order&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; cubic
+        interpolation<br>
+        fourierspacing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        0.16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; grid spacing for FFT<br>
+        ; Temperature coupling is on<br>
+        tcoupl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =
+        V-rescale&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; modified Berendsen thermostat<br>
+        tc-grps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = Protein Non-Protein&nbsp;&nbsp; ; two coupling groups - more accurate<br>
+        tau_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 0.1&nbsp;&nbsp;&nbsp;&nbsp;
+        0.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; time
+        constant, in ps<br>
+        ref_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 300&nbsp;&nbsp;&nbsp;&nbsp;
+        300&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;
+        reference temperature, one for each group, in K<br>
+        ; Pressure coupling is on<br>
+        pcoupl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = Parrinello-Rahman&nbsp;&nbsp;&nbsp;&nbsp; ; Pressure coupling on in
+        NPT<br>
+        pcoupltype&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =
+        isotropic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; uniform scaling of box vectors<br>
+        tau_p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =
+        2.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; time constant, in ps<br>
+        ref_p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =
+        1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; reference pressure, in bar<br>
+        compressibility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        4.5e-5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; isothermal compressibility of water, bar^-1<br>
+        refcoord_scaling&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = com<br>
+        ; Periodic boundary conditions<br>
+        pbc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = xyz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 3-D PBC<br>
+        ; Velocity generation<br>
+        gen_vel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = no&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Velocity generation is
+        off</div>
+      <p>Check pressure and density with gmx energy tool.</p>
+      <h3>Production</h3>
+      <p>Finally, it is possible to run the production step.</p>
+      <div id="Instr">gmx grompp -f md.mdp -c npt.gro -t npt.cpt -p topol.top -o md_0_1<br>
+      gmx mdrun -deffnm md_0_1 -nb gpu</div>
+      <p>md.mdp</p>
+      <div id="Instr">title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = VSP9 production<br>
+        ; Run parameters<br>
+        integrator&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = md&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; leap-frog integrator<br>
+        nsteps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 500000&nbsp;&nbsp;&nbsp; ; 2 * 500000 = 1000 ps (1 ns)<br>
+        dt&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 0.002&nbsp;&nbsp;&nbsp;&nbsp; ; 2 fs<br>
+        ; Output control<br>
+        nstxout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; suppress bulky
+        .trr file by specifying <br>
+        nstvout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 0 for output
+        frequency of nstxout,<br>
+        nstfout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; nstvout, and
+        nstfout<br>
+        nstenergy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 5000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; save energies every 10.0 ps<br>
+        nstlog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 5000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; update log file every 10.0 ps<br>
+        nstxout-compressed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        5000&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; save compressed coordinates every
+        10.0 ps<br>
+        compressed-x-grps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        System&nbsp;&nbsp;&nbsp; ; save the whole system<br>
+        ; Bond parameters<br>
+        continuation&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Restarting after NPT <br>
+        constraint_algorithm&nbsp;&nbsp;&nbsp; = lincs&nbsp;&nbsp;&nbsp;&nbsp; ;
+        holonomic constraints <br>
+        constraints&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = h-bonds&nbsp;&nbsp; ; bonds involving H are constrained<br>
+        lincs_iter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; accuracy of LINCS<br>
+        lincs_order&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; also related to
+        accuracy<br>
+        ; Neighborsearching<br>
+        cutoff-scheme&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = Verlet&nbsp;&nbsp;&nbsp; ; Buffered neighbor searching<br>
+        ns_type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = grid&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; search neighboring grid cells<br>
+        nstlist&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 20 fs, largely
+        irrelevant with Verlet scheme<br>
+        rcoulomb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; short-range electrostatic
+        cutoff (in nm)<br>
+        rvdw&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; short-range van der Waals
+        cutoff (in nm)<br>
+        ; Electrostatics<br>
+        coulombtype&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = PME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Particle Mesh Ewald for
+        long-range electrostatics<br>
+        pme_order&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; cubic
+        interpolation<br>
+        fourierspacing&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        0.16&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; grid spacing for FFT<br>
+        ; Temperature coupling is on<br>
+        tcoupl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =
+        V-rescale&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; modified Berendsen thermostat<br>
+        tc-grps&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = Protein Non-Protein&nbsp;&nbsp; ; two coupling groups - more accurate<br>
+        tau_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 0.1&nbsp;&nbsp;&nbsp;&nbsp;
+        0.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; time
+        constant, in ps<br>
+        ref_t&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = 300&nbsp;&nbsp;&nbsp;&nbsp;
+        300&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;
+        reference temperature, one for each group, in K<br>
+        ; Pressure coupling is on<br>
+        pcoupl&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = Parrinello-Rahman&nbsp;&nbsp;&nbsp;&nbsp; ; Pressure coupling on in
+        NPT<br>
+        pcoupltype&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =
+        isotropic&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; uniform scaling of box vectors<br>
+        tau_p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =
+        2.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; time constant, in ps<br>
+        ref_p&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        =
+        1.0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; reference pressure, in bar<br>
+        compressibility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; =
+        4.5e-5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        ; isothermal compressibility of water, bar^-1<br>
+        ; Periodic boundary conditions<br>
+        pbc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = xyz&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; 3-D PBC<br>
+        ; Dispersion correction<br>
+        DispCorr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = EnerPres&nbsp; ; account for cut-off vdW scheme<br>
+        ; Velocity generation<br>
+        gen_vel&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        = no&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ; Velocity generation is
+        off </div>
+      <p><br>
+      </p>
+    </div>
+  </body>
+</html>

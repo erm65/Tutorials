@@ -7,18 +7,56 @@
   </head>
   <body>
     <h1>Linux commands</h1>
-    <p><span class="Instr">cp -rL source.file destination.file</span></p>
+    <p><div id="Instr">cp <i>file1 file2</i></div></p>
+    <ul>
+      <li><span class="Instr">copy file1 in file2<br>
+        </span></li>
+    </ul>
+    <p><div id="Instr">cp -rL source.file destination.file</div></p>
     <ul>
       <li>-r: recursively option</li>
       <li>-L: copy the original file that is linked with as symbolic link</li>
     </ul>
+    <p>man <i>command</i></p>
+    <ul>
+      <li>show help for the command</li>
+    </ul>
     <p>nvidia-smi</p>
     <ul>
       <li>monitoring Nvidia GPU</li>
+      <li>in particular, chem GPU-Util that show the percentage of utilization
+        of the CPU</li>
+    </ul>
+    <h2>module</h2>
+    <p>The setup of the environment can be done using the module tool installed
+      by Aethia</p>
+    <h3>Use</h3>
+    <p>To setup an environment present in the modulefiles</p>
+    <div id="Instr">module load modulefile</div>
+    <p>Checking the list of the modulefiles</p>
+    <div id="Instr">module avail</div>
+    <p>Showing the list of loaded modules</p>
+    <div id="Instr">module list</div>
+    <h3>Setup of a new modulefile</h3>
+    <p>Modulefiles are located in two directories</p>
+    <p>/usr/share/Modules/modulefiles</p>
+    <p>/etc/modulefiles</p>
+    <p>In such directories, some sub-directories contain the modulefiles that
+      will be loaded with module tool.</p>
+    <p>New modulfiles added in such directories are immediately recognized by
+      the module tool.</p>
+    <p>To use the correct syntax, it is better to copy an old file and modified
+      it.</p>
+    <p><b>Warning</b>: check the permissions of sub-directories (drwxr-xr-x) and
+      modlefiles (-rw-r--r--)</p>
+    <p><br>
+    </p>
+    <ul>
     </ul>
     <p><br>
     </p>
     <ul>
     </ul>
+    
   </body>
 </html>

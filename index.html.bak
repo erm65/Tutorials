@@ -9,19 +9,25 @@
     <h1>CASSMedChem tutorials page</h1>
     <h2>Introduction</h2>
     <p>The tutorials are intended for internal use in CASSMedChem laboratory</p>
-    <h3>List</h3>
+    <h2>List</h2>
     <ul>
-      <li><a href="BRMatlab.html" title="BRMatlab">BRMatlab</a></li>
+      <li><a href="BRMatlab.html" title="BRMatlab" target="_blank">BRMatlab</a></li>
     </ul>
     <ul>
-      <li><a href="SpartanCharges.html"><span style="color: #0000ee;">Charges
+      <li><a href="SpartanCharges.html" target="_blank"><span style="color: #0000ee;">Charges
             calculations</span></a></li>
-      <li><span style=" color: #0000ee;"><a href="ConformationalSampling.html">Conformational
-            Search</a></span></li>
+      <li><span style=" color: #0000ee;"><a href="ConformationalSampling.html" target="_blank">Conformational
+            Sampling</a></span></li>
+      <li><span style="  color: #0000ee;"><a href="ConformersAnalysis.html" target="_blank">Conformers
+            Analysis</a><br>
+        </span></li>
     </ul>
     <p></p>
     <ul>
-      <li><a href="Docker_commands.html" title="Docker commands">Docker commands</a></li>
+      <li><a href="Docker_commands.html" title="Docker commands" target="_blank">Docker
+          command</a></li>
+    </ul>
+    <ul>
     </ul>
     <ul>
       <li><a href="FLAP_SB_Protocol.html">FLAP SBVS</a></li>
@@ -30,23 +36,26 @@
       <li><a href="Linux_commands.html" title="Linux commands">Linux commands</a></li>
     </ul>
     <ul>
-      <li><a href="Matlab_scripts.html">Matlab</a></li>
-      <li><a href="MD_Cyclopeptides.html"><span style="color: #0000ee;">MD:
-            cyclic peptides setup<br>
-          </span></a></li>
-      <li><span style=" color: #0000ee;"><a href="MD_PlainRunWater.html">MD:
-            Plain run</a><br>
+      <li><a href="Matlab_scripts.html" target="_blank">Matlab</a></li>
+      <li><a href="MD_Cyclopeptides.html" target="_blank"><span style="color: #0000ee;">MD:
+            cyclic peptides setup</span></a></li>
+      <li><span style=" color: #0000ee;"><a href="MD_MSM_Protocol.html" target="_blank">MD_MSM</a></span></li>
+      <li><span style="  color: #0000ee;"><a href="MD_SetupForMSM.html" target="_blank">MD:
+            MSM simulations setup</a><br>
         </span></li>
-      <li><span style=" color: #0000ee;"><a href="MD_SetupRunInSolvent.html">MD:
+      <li><span style=" color: #0000ee;"><a href="MD_PlainRunWater.html" target="_blank">MD:
+            Plain run in water</a></span></li>
+      <li><span style=" color: #0000ee;"><a href="MD_SetupRunInSolvent.html" target="_blank">MD:
             Plain run in solvent</a></span></li>
+      <li><span style="  color: #0000ee;"><a href="Modeller.html">Modeller</a><br>
+        </span></li>
     </ul>
     <ul>
       <a href="Matlab_scripts.html"> </a>
-      <li><a href="EMMA.html">PyEMMA</a></li>
-      <li><a href="PyMol.html" title="PyMol">PyMol</a></li>
+      <li><a href="EMMA.html" target="_blank">PyEMMA</a></li>
+      <li><a href="PyMol.html" title="PyMol" target="_blank">PyMol</a></li>
     </ul>
     <ul>
-      
     </ul>
     <ul>
     </ul>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>Calcolo PSA</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <h1>Calcolo della Polar Surface Area</h1>
+    <h2>Introduction</h2>
+    <p> The Polar Surface Area (PSA) is ...</p>
+    <p>PSA is calculated following various protocols.</p>
+    <p><br>
+    </p>
+    <h2>PSA calculation accordin Matteo's protocol</h2>
+    <h3>Matteo's plugin</h3>
+    <p>Copy the following lines in a file named psa_3d.py located in
+      c:\PyMOL_Installation</p>
+    <div id="Instr">from pymol import cmd<br>
+      def psa3d (arg1=0.6, arg2=-0.6):<br>
+      &nbsp;&nbsp; &nbsp;obj_list = cmd.get_names('objects') <br>
+      &nbsp;&nbsp; &nbsp;for obj in obj_list: <br>
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;cmd.select('noh',
+      '(pc.&gt;'+str(arg1)+'|pc.&lt;'+str(arg2)+'|(e. n OR e. o OR e. h
+      AND(neighbor e. n OR e. o))) AND ' + obj)<br>
+      &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; print("3DPSA_noh06 %12s %.3f" %
+      (obj, cmd.get_area('noh'))) <br>
+      &nbsp;&nbsp; &nbsp;return obj<br>
+      cmd.extend("psa3d", psa3d)</div>
+    <p></p>
+    <ul>
+    </ul>
+    <p>Run PyMOL</p>
+    <p>Click on Plugin - Plugin Manager - Install New Plugin - Choose file</p>
+    <p>Choose psa_3d.py in the directory c:\PyMOL_Installation</p>
+    <p>Click Ok</p>
+    <ul>
+      <li>If all is ok a messagge will be shown that inform you that the plugin
+        has been installed</li>
+    </ul>
+    <p>Check on the Plugin Manager that the&nbsp; plugin is installed&nbsp; and
+      close it.</p>
+    <p>The plugin is ready.</p>
+    <p>Load a molecule and type psa3d in the PyMOL command window</p>
+    <ul>
+      <li>It should be possible that it is necessary to exit and rerun PyMOL to
+        activate the plugin</li>
+    </ul>
+    <p>When the plugin works, the PSA (SA 3D PSA – NOH+0.6) could be calculated
+      with the following instruction:</p>
+    <div id="Instr">
+      <p>set solvent_radius=1.4; set dot_density=4; set dot_solvent=1; psa3d</p>
+    </div>
+    <p></p>
+    <h3></h3>
+    <h3>Protocol</h3>
+    <h4>Structure preparation</h4>
+    <p>The application of the protocol requires to start with one or more
+      minimized conformations in mol2 format.</p>
+    <p>The minimized structure or structures can be the result of a
+      conformational sampling or they can be obtained experimentally. The
+      structures should be checked for bond orders, ionization state, etc but in
+      principle these checks should be already done. To be sure that all is ok,
+      it is suggested a new check using Maestro.</p>
+    <h4>Charge calculation</h4>
+    <p>Partial charges are calculated using <b>PM3</b> semi-empirical method
+      implemented in Spartan.</p>
+    <p>Launch Spartan.</p>
+    <p>Click on <i>File </i>- <i>Open</i> and chose the directory with the
+      mol2 files, then change the extension selection to <i>All Files</i>.
+      Finally, chose the mol2 files. <i>Open</i>.</p>
+    <p>Click on Setup - Calculations</p>
+    <ul>
+      <li>In Calculate, chose Energy, Semi-Empirical, PM3, Gas</li>
+      <li>Select Global Calculations to submit all the molecules</li>
+      <ul>
+        <li>If more mol2 files were opened, each calculation must be performed
+          separately</li>
+        <li>If a multi-mol2 file was opened, the option Global Calculations
+          allows you to run calculations for all the molecules</li>
+      </ul>
+      <li>Submit</li>
+    </ul>
+    <p>Chose the name of the file</p>
+    <ul>
+      <li>Maintain the same name of mol2 file but delete the extension</li>
+    </ul>
+    <p>Check the submission using <i>Options </i>- <i>Monitor</i></p>
+    <p>When the calculations finish, save the results, <i>File - Save</i>.</p>
+    <p><br>
+    </p>
+    <h4>PSA calculation with PyMol</h4>
+    <p>3D PSA is calculated in <b>PyMol </b>1.7.0.1.</p>
+    <p>The calculated surfaces include definitions where polar atoms were
+      defined as nitrogen, oxygen and attached hydrogens or extended to include
+      atoms with absolute partial charge greater than the threshold specified
+      (0.6). </p>
+    <p>Both molecular surface area (probe radius = 0 Å) and solvent accessible
+      surface area (probe radius = 1.4 Å) were calculated in PyMol.</p>
+    <p>Pymol 3D PSA commands:</p>
+    <p>SA 3D PSA – NOH+0.6 was calculated by running the following command:</p>
+    <div id="Instr">set solvent_radius=1.4; set dot_density=4; set
+      dot_solvent=1; psa3d </div>
+    <p>M 3D PSA – NOH+0.6 was calculated by running the following command:</p>
+    <div id="Instr">set dot_density=4; set dot_solvent=0; psa3d</div>
+    <p>where a Pymol plugin enabled calculation of 3D PSA for all objects in the
+      current session (see <a href="PyMol.html">PyMol</a> for installation
+      instructions).</p>
+    <p> </p>
+    <p></p>
+  </body>
+</html>

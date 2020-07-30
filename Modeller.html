@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Modeller</title>
+  </head>
+  <body>
+    <h1>Modeller</h1>
+    <p> </p>
+    <h2> Installation</h2>
+    <p>Download the software from the <a href="https://salilab.org/modeller/" target="_blank">Modeller
+        site</a>.</p>
+    <p>Follow the installation instruction, <a href="https://salilab.org/modeller/9.24/release.html#windows"
+        target="_blank">here</a>.</p>
+    <h2>Instructions (simple homology modeling)</h2>
+    <h3>Basic modelling (<a href="https://salilab.org/modeller/tutorial/basic.html"
+        target="_blank">here</a>)</h3>
+    <h4>Search the target sequence</h4>
+    <p>Put the target sequence in PIR format.</p>
+    <div id="Instr">&gt;P1;TvLDH<br>
+      sequence:TvLDH:::::::0.00: 0.00<br>
+MSEAAHVLITGAAGQIGYILSHWIASGELYGDRQVYLHLLDIPPAMNRLTALTMELEDCAFPHLAGFVATTDPKA<br>
+AFKDIDCAFLVASMPLKPGQVRADLISSNSVIFKNTGEYLSKWAKPSVKVLVIGNPDNTNCEIAMLHAKNLKPEN<br>
+FSSLSMLDQNRAYYEVASKLGVDVKDVHDIIVWGNHGESMVADLTQATFTKEGKTQKVVDVLDHDYVFDTFFKKI<br>
+GHRAWDILEHRGFTSAASPTKAAIQHMKAWLFGTAPGEVLSMGIPVPEGNPYGIKPGVVFSFPCNVDKEGKIHVV<br>
+      EGFKVNDWLREKLDFTEKDLFHEKEIALNHLAQGG*</div>
+    <ul>
+      <li>The first line contains the sequence code, in the format "&gt;P1;code"</li>
+      <li>The second line with <b>ten </b>fields separated by colons generally
+        contains information about the structure file, if applicable. Only two
+        of these fields are used for sequences, "sequence" (indicating that the
+        file contains a sequence without known structure) and "TvLDH" (the model
+        file name). </li>
+      <li>The rest of the file contains the sequence of TvLDH, <b>with "*"
+          marking its end</b>. </li>
+      <li>The standard one-letter amino acid codes are used. (Note that they
+        must be <b>upper case</b>; some lower case letters are used for
+        non-standard residues. See the file modlib/restyp.lib in the Modeller
+        distribution for more information.</li>
+    </ul>
+    <h4>Run Modeller</h4>
+    <p>It is suggested to run Modeller scripts using a Python installation,
+      otherwise the scripts can be launched using mod9.24 where 9.24 is the
+      version installed on the computer but the version can be change, thus it
+      is mandatory to check the version.</p>
+    <p>To run modeller, the cmd windows must be launched from the Modeller App
+      in order to set the environment.</p>
+    <p>In the search windows type Modeller and then click on Modeller App.</p>
+    <p>In the open command windows change the working directory using:</p>
+    <p>cd c:\WORKING DIRECTORY</p>
+    <p>The working directory can be found with the File Explorer, it can be read
+      below the command section.</p>
+    <h4>Search for potential related sequences of known structure</h4>
+    <p>The search can be performed by the profile.build() command of MODELLER</p>
+    <div id="Instr">from modeller import *<br>
+      <br>
+      log.verbose()<br>
+      env = environ()<br>
+      <br>
+      #-- Prepare the input files<br>
+      <br>
+      #-- Read in the sequence database<br>
+      sdb = sequence_db(env)<br>
+      sdb.read(seq_database_file='pdb_95.pir', seq_database_format='PIR',<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; chains_list='ALL',
+      minmax_db_seq_len=(30, 4000), clean_sequences=True)<br>
+      <br>
+      #-- Write the sequence database in binary form<br>
+      sdb.write(seq_database_file='pdb_95.bin', seq_database_format='BINARY',<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; chains_list='ALL')<br>
+      <br>
+      #-- Now, read in the binary database<br>
+      sdb.read(seq_database_file='pdb_95.bin', seq_database_format='BINARY',<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; chains_list='ALL')<br>
+      <br>
+      #-- Read in the target sequence/alignment<br>
+      aln = alignment(env)<br>
+      aln.append(file='TvLDH.ali', alignment_format='PIR', align_codes='ALL')<br>
+      <br>
+      #-- Convert the input sequence/alignment into<br>
+      #&nbsp;&nbsp; profile format<br>
+      prf = aln.to_profile()<br>
+      <br>
+      #-- Scan sequence database to pick up homologous sequences<br>
+      prf.build(sdb, matrix_offset=-450, rr_file='${LIB}/blosum62.sim.mat',<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      gap_penalties_1d=(-500, -50), n_prof_iterations=1,<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      check_profile=False, max_aln_evalue=0.01)<br>
+      <br>
+      #-- Write out the profile in text format<br>
+      prf.write(file='build_profile.prf', profile_format='TEXT')<br>
+      <br>
+      #-- Convert the profile back to alignment format<br>
+      aln = prf.to_alignment()<br>
+      <br>
+      #-- Write out the alignment file<br>
+      aln.write(file='build_profile.ali', alignment_format='PIR')</div>
+    <p>The profile.build() command has many options</p>
+    <ul>
+      <li> In this example rr_file is set to use the BLOSUM62 similarity matrix
+        (file "<b>blosum62.sim.mat</b>" <b>provided in the MODELLER
+          distribution</b>)</li>
+      <li>Accordingly, the parameters matrix_offset and gap_penalties_1d are set
+        to the appropriate values for the BLOSUM62 matrix</li>
+      <li>For this example, we will run only one search iteration by setting the
+        parameter n_prof_iterations equal to 1</li>
+      <ul>
+        <li>Thus, there is no need for checking the profile for deviation
+          (check_profile set to False)</li>
+      </ul>
+      <li>Finally, the parameter max_aln_evalue is set to 0.01, indicating that
+        only sequences with e-values smaller than or equal to 0.01 will be
+        included in the final profile</li>
+      <li>The sequences can be found in the file "pdb_95.pir", that must be
+        provided in the directory where the search is launched</li>
+    </ul>
+    <p>Run Modeller:</p>
+    <div id="Instr">mod9.24 01_build_profile.py</div>
+    <p><b>Warning</b>: the scripts can be launched using mod9.24 where 9.24 is
+      the version installed on the computer but the version can be change, thus
+      it is mandatory to check the version.</p>
+    <p>Output:</p>
+    <ul>
+      <li>log file, with all information about the run</li>
+      <li>prf file,&nbsp; an extract (omitting the aligned sequences).</li>
+    </ul>
+    <p>Most important columns in the table of the results:</p>
+    <ul>
+      <li>The second column reports the code of the PDB sequence;</li>
+      <li>The eleventh column reports the percentage sequence identities</li>
+      <ul>
+        <li>In general, a sequence identity value above approximately 25%
+          indicates a potential template unless the alignment is short (i.e.,
+          less than 100 residues)</li>
+      </ul>
+      <li>The twelfth column reports the e-value of the alignment</li>
+      <ul>
+        <li>e-values equal to 0 means very significant similarities</li>
+      </ul>
+    </ul>
+    <h4>Alignment of template structures</h4>
+    <p>To select the most appropriate template for our query sequence over the
+      similar structures, compare.py is used to assess the structural and
+      sequence similarity between the possible templates.</p>
+    <p>Here there is the script when more than one pdb structure was found.</p>
+    <div id="Instr">from modeller import *<br>
+      <br>
+      env = environ()<br>
+      aln = alignment(env)<br>
+      for (pdb, chain) in (('1TXU', 'A'), ('4q9u', 'A'), ('4n3z', 'A'),<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      ('2ot3', 'A')):<br>
+      &nbsp;&nbsp;&nbsp; m = model(env, file=pdb, model_segment=('FIRST:'+chain,
+      'LAST:'+chain))<br>
+      &nbsp;&nbsp;&nbsp; aln.append_model(m, atom_files=pdb,
+      align_codes=pdb+chain)<br>
+      aln.malign()<br>
+      aln.malign3d()<br>
+      aln.compare_structures()<br>
+      aln.id_table(matrix_file='family.mat')<br>
+      env.dendrogram(matrix_file='family.mat', cluster_cut=-1.0)</div>
+    <p>The script has to be modified according to the system that we are
+      studying. </p>
+    <ul>
+      <li>Change the pdb codes in according to own search, here 1TXU ('<b>1TXU</b>',
+        'A')</li>
+      <li>Check the correct chain in the PDB file, here A ('1TXU', '<b>A</b>')</li>
+      <li>Check the parenthesis in the script, according to Python syntax</li>
+      <li>Put the PDB files in the working directory of the script</li>
+    </ul>
+    <p>When there is only one PDB structure, the script has to be modified
+      according to Python syntax.</p>
+    <div id="Instr">from modeller import *<br>
+      <br>
+      env = environ()<br>
+      aln = alignment(env)<br>
+      for (pdb, chain) in <b>(('1txu', 'A'), )</b>:<br>
+      &nbsp;&nbsp;&nbsp; m = model(env, file=pdb, model_segment=('FIRST:'+chain,
+      'LAST:'+chain))<br>
+      &nbsp;&nbsp;&nbsp; aln.append_model(m, atom_files=pdb,
+      align_codes=pdb+chain)<br>
+      aln.malign()<br>
+      aln.malign3d()<br>
+      aln.compare_structures()<br>
+      aln.id_table(matrix_file='family.mat')<br>
+      env.dendrogram(matrix_file='family.mat', cluster_cut=-1.0)</div>
+    <p><b>Warning</b>: attention to the comma in for instruction becuse it is
+      mandatory.</p>
+    <p>Finally, the script can be launched.<br>
+    </p>
+    <div id="Instr">mod9.24 02_compare.py</div>
+    <ul>
+      <li>At the end of the loop, all of the structures are in the alignment,
+        but they are not ideally aligned to each other (append_model creates a
+        simple 1:1 alignment with no gaps)</li>
+      <li>Therefore, we improve this alignment by using <b>malign </b>to
+        calculate a <b>multiple sequence alignment</b></li>
+      <li> The malign3d command then performs an iterative least-squares
+        superposition of the six 3D structures, using the multiple sequence
+        alignment as its starting point</li>
+      <li>The compare_structures command compares the structures according to
+        the alignment constructed by malign3d</li>
+      <ul>
+        <li>It does not make an alignment, but it calculates the RMS and DRMS
+          deviations between atomic positions and distances, differences between
+          the mainchain and sidechain dihedral angles, percentage sequence
+          identities, and several other measures</li>
+      </ul>
+      <li>Finally, the id_table command writes a file with pairwise sequence
+        distances that can be used directly as the input to the dendrogram
+        command (or the clustering programs in the PHYLIP package)</li>
+      <ul>
+        <li>Dendrogram calculates a clustering tree from the input matrix of
+          pairwise distances, which helps visualizing differences among the
+          template candidates</li>
+      </ul>
+    </ul>
+    <p><br>
+    </p>
+    <p> </p>
+  </body>
+</html>

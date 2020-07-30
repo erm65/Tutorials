@@ -110,7 +110,7 @@
       gmx editconf -f <i>mol_solv_final_mec.pdb</i> -o <i>mol_test.gro</i> -bt
       cubic -d 0.5</div>
     <p>Now run the minimization with Gromacs</p>
-    <div id="Instr">gmx grompp -f em.mdp -c ach_test.gro -p
+    <div id="Instr">gmx grompp -f em.mdp -c mol_test.gro -p
       ach_wat_fin_mec_GMX.top -o em.tpr -v<br>
       gmx mdrun -ntmpi 1 -v -deffnm em</div>
     <p>If grompp exits with an error about a cut-off, the box dimensions has to
@@ -137,6 +137,8 @@
     <ul>
       <li>Check the result with VMD</li>
     </ul>
+    <p>The topology (.top) file is updated with the addition of a new row in [
+      molecules ] section</p>
     <p>Edit the topology file </p>
     <ul>
       <li>delete [ defaults ] section</li>
@@ -170,32 +172,59 @@
       neutral molecules whereas it is used to add ion(s) when the molecule is
       charged</p>
     <p></p>
-    <p>gmx grompp -f em.mdp -c mol_test_wat.gro -p mol_wat_fin_mec_GMX.top -o
-      em.tpr</p>
+    <div id="Instr">gmx grompp -f em.mdp -c mol_test_wat.gro -p
+      mol_wat_fin_mec_GMX.top -o em.tpr</div>
     <p>Now <b>if the molecule is ionized</b>, it is mandatory to balance the
       number of charges by the addition of a counter ion, To add ions, the file
       tpr is required</p>
-    <p>gmx genion -s em.tpr -o mol_test_wat_fin.gro -p ach_GMX_1.top -pname NA
-      -nname CL -neutral</p>
-    <p>Select SOL option</p>
+    <div id="Instr">gmx genion -s em.tpr -o mol_test_wat_fin.gro -p
+      ach_GMX_1.top -pname NA -nname CL -neutral</div>
+    <ul>
+      <li>Select SOL option</li>
+    </ul>
     <p>Check the resulting gro file to be sure that ion(s) was(were) added and
       check that topology was modified according to the added ion(s)</p>
-    <p>Then rebuild the tpr file (only if ions were added, otherwise go to the
-      run step)</p>
-    <p>gmx grompp -f em.mdp -c mol_test_wat.gro -p mol_wat_fin_mec_GMX.top -o
-      em.tpr</p>
-    <p>gmx mdrun -ntmpi 1 -v -deffnm em</p>
+    <p>If ions were added, rebuild the tpr file</p>
+    <div id="Instr">gmx grompp -f em.mdp -c mol_test_wat.gro -p
+      mol_wat_fin_mec_GMX.top -o em.tpr</div>
+    <p>and run the test minimization</p>
+    <div id="Instr">gmx mdrun -ntmpi 1 -v -deffnm em</div>
     <p>Check the output em.gro with VMD</p>
     <p>Check the result with VMD</p>
-    <p>The topology (.top) file is updated with the addition of a new row in [
-      molecules ] section</p>
+    <h4>MD setup in chloroform</h4>
     <p><br>
     </p>
+    <h4>Setup MD runs for MSM</h4>
+    <p>Now, the setup of MD simulations has to be carried out to all the
+      conformations selected from the Conformational Sampling / Cluster step.</p>
+    <p>In principle, every MD simulation will run for 100 ns, thus 100
+      conformations will be used to arrive to 100 x 100 ns = 10000 ns = 10 μs
+      (suggested total run time from literature).</p>
+    <p>Probably, a first multi run of about 50 conformations could be a good
+      starting point for a tentative MSM analysis. The MSM analysis could
+      suggest the new conformations for the remaining simulations.</p>
+    <p>Firstly, select mol_01-50.mol2 conformations.</p>
+    <p>Then, check the consistency between the selected conformations and the
+      mec used in the paramterization</p>
+    <ul>
+      <li>Check the name of the residue, that it must be the same</li>
+      <li>Check the order of the atoms, that must be the same</li>
+    </ul>
     <p><br>
     </p>
-    <p><br>
-    </p>
-    <br>
+    <p>cp mol2/ach_wat_01.mol2 .</p>
+    <p>obabel -imol2 ach_wat_01.mol2 -opdb -O ach_wat_01.pdb</p>
+    <p>gmx editconf -f ach_wat_01.pdb -o ach_wat_01.gro -bt cubic -box 3.0 3.0
+      3.0</p>
+    <p>cp topology/ach_wat.top ach_wat_01.top</p>
+    <p>gmx solvate -cp ach_wat_01.gro -o ach_wat_01_sol.gro -p ach_wat_01.top</p>
+    <p>gmx grompp -f scripts/em.mdp -c ach_wat_01_sol.gro -p ach_wat_01.top -o
+      em.tpr</p>
+    <p>gmx genion -s em.tpr -o ach_wat_01_sol.gro -p ach_wat_01.top -pname NA
+      -nname CL -neutral</p>
+    <p>gmx grompp -f scripts/em.mdp -c ach_wat_01_sol.gro -p ach_wat_01.top -o
+      em.tpr</p>
+    <p>mpirun -np 1 mdrun -deffnm em -cpt 1 -cpo em_restart.cpt</p>
     <p><br>
     </p>
     <p><br>
