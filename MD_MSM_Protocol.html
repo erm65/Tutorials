@@ -8,10 +8,17 @@
   <body>
     <h1>MD MSM Protocol</h1>
     <h2>Parametrization of organic molecules</h2>
-    <p>The parametrization is not required for peptides.</p>
+    <p>The parametrization is not required for peptides, for cyclic peptides a
+      workaround is needed to overcome the cyclization problem.</p>
     <p>The parametrization is carried out on the minimum energy conformer (MEC)
       resulting from Omega conformational sampling after the minimization with
-      Szybki.</p>
+      Szybki. </p>
+    <p><span style="color: red;">WARNING</span>: Omega changes the atoms order,
+      thus it is MANDATORY to use the files obtained by the Szybki minimization
+      of Omega output to avoid problems when the MD simulation protocol is used
+      to study all conformations. In principle, the output of Omega is always
+      the same and it does not depend on the epsilon used to simulate the
+      environment.</p>
     <p>The parametrization is carried out with acpype tool.</p>
     <h3>acpype on site</h3>
     <p>Set up of the environment</p>
@@ -61,10 +68,27 @@
       <li>mol_solf_final_GMX.top</li>
     </ul>
     <h3>Topology test</h3>
-    <p>Copy the two files mentioned above to a new directory <i>test_top_mol </i>with
-      <i>mol_solv_final_mec.mol2</i></p>
-    <p>Create a file em.mdp to test the topology with a minimization. The file
-      has to contain the following instructions:</p>
+    <p>Firstly, it is possible to test the topology files using the em.mdp file
+      included in the acpype output following the instruction reported in
+      em.mdp.</p>
+    <p>A second test is performed in the directory where the simulations will be
+      launched.</p>
+    <p>The new tests will be launched directly in the topology directory <i>top</i>.
+      Thus, copy the following files in <i>top</i>:</p>
+    <ul>
+      <li>mol_solv_final_GMX.itp</li>
+      <li>mol_solf_final_GMX.top</li>
+      <li>if the simulation is run in chloroform</li>
+      <ul>
+        <li>CHL_Box.pdb</li>
+        <li>CHL.itp</li>
+      </ul>
+      <li>the file mol2 that will be used in the next simulations (in principle
+        the same used by acpype or a file obtained by the conformational
+        analysis</li>
+    </ul>
+    Create a file em.mdp to test the topology with a minimization. The file has
+    to contain the following instructions:
     <div id="Instr">; Parameters describing what to do, when to stop and what to
       save<br>
       integrator&nbsp; = steep&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ;
@@ -113,13 +137,29 @@
     <div id="Instr">gmx grompp -f em.mdp -c mol_test.gro -p
       ach_wat_fin_mec_GMX.top -o em.tpr -v<br>
       gmx mdrun -ntmpi 1 -v -deffnm em</div>
-    <p>If grompp exits with an error about a cut-off, the box dimensions has to
-      be increased until the procedure finishes without errors (i.e. change -d
-      0.5 to -d 1.0 or larger values)</p>
+    <p>Problems that could be encountered during grompp run:</p>
+    <p>1) Non-matching atom names</p>
+    <p>Message:</p>
+    <p>Fatal error:<br>
+      Too many warnings (1), gmx terminated.<br>
+      WARNING 1 [file arv_GMX.top, line 15]:<br>
+      &nbsp; 1 non-matching atom name<br>
+      &nbsp; atom names from arv_GMX.top will be used<br>
+      &nbsp; atom names from arv852_chl_01.gro will be ignored</p>
+    <p> </p>
+    <p>Solution:</p>
+    <p>Check the itp file and correct atom names. In particular, some atoms,
+      i.e. chlorine, are reported in capital letters in the pdb file, i.e. CL,
+      whereas in the itp file not, i.e. Cl. In these cases, the CL has to be
+      changed in Cl, check the definition in the pdb file. This solution should
+      guarantee compatibility with all the conformers. </p>
+    <p>2) If grompp exits with an error about a cut-off, the box dimensions has
+      to be increased until the procedure finishes without errors (i.e. change
+      -d 0.5 to -d 1.0 or larger values)</p>
     <p> Check em.gro with VMD to be sure that all is ok</p>
     <div id="Instr">vmd em.gro</div>
     <p>From the VMD console:</p>
-    <div id="Instr">pbd box_draw</div>
+    <div id="Instr">pbc box_draw</div>
     <p>Check the dimensions of the box to be sure that the molecule is well
       positioned.</p>
     <p>If all is ok, move to the next step.</p>
@@ -192,14 +232,90 @@
     <p>Check the output em.gro with VMD</p>
     <p>Check the result with VMD</p>
     <h4>MD setup in chloroform</h4>
-    <p>Create a new directory mol_wat_setup and copy herein the following files
-      from the test directory </p>
+    <p>Check that in the top file the following files are present:</p>
     <ul>
-      <li>mol_solv_final_GMX.itp</li>
-      <li>mol_solf_final_GMX.top</li>
-      <li>mol_test.gro</li>
+      <li>mol_GMX.itp</li>
+      <li>mol_GMX.top</li>
+      <li>CHL_Box.pdb</li>
+      <li>CHL.itp</li>
+      <li>mol.gro</li>
     </ul>
-    <h4>Setup MD runs for MSM</h4>
+    <div id="Instr">gmx solvate -cp mol.gro -cs CHL_Box.pdb -o
+      mv1_model1_solv.gro -p topol_cyc.top</div>
+    <p></p>
+    <p>Check the result with VMD </p>
+    <p>The topology (.top) file is updated with the addition of a new row in [
+      molecules ] section</p>
+    <p> </p>
+    <p>Edit the topology file </p>
+    <ul>
+      <li>delete [ defaults ] section</li>
+      <li>insert itp information about deafult ff, water model (tip3p) and ions
+        (even if it is necessary only for charged molecules) </li>
+    </ul>
+    <p></p>
+    <div id="Instr">; arv_GMX.top created by acpype (v: 2020-03-15T13:27:00CET)
+      on Fri Sep 25 10:01:49 2020<br>
+      <br>
+      ; Include default ff<br>
+      #include "amber99sb.ff/forcefield.itp"<br>
+      <br>
+      ; Include mol_GMX.itp topology<br>
+      #include "mol_GMX.itp"<br>
+      <br>
+      ; Include chloroform<br>
+      #include "CHL.itp"<br>
+      <br>
+      ; Include ions (not alway necessary)<br>
+      #include "amber99sb.ff/ions.itp"<br>
+      <p></p>
+    </div>
+    <ul>
+      <li> The order is mandatory because forcefield.itp contains the [ defaults
+        ] section that must be unique whereas the topology file of our molecule
+        has a section [ atomtypes ] to define new atoms that must be located
+        before the definitions of other molecules. </li>
+      <li>h3 atom type of chloroform is not present in the [Atom types] section
+        of the mol.itp file but this section cannot be called more than one
+        times. To resolve the error it is mandatory to add in the&nbsp; [Atom
+        types] section of the mol.itp a row with h3 definition</li>
+    </ul>
+    <div id="Instr">[ atomtypes ]<br>
+      ;name&nbsp;&nbsp; bond_type&nbsp;&nbsp;&nbsp;&nbsp;
+      mass&nbsp;&nbsp;&nbsp;&nbsp; charge&nbsp;&nbsp; ptype&nbsp;&nbsp;
+      sigma&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      epsilon&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Amb<br>
+      ... ...<br>
+      h3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      h3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 0.00000&nbsp;
+      0.00000&nbsp;&nbsp; A&nbsp;&nbsp;&nbsp;&nbsp; 2.11499e-01&nbsp;&nbsp;
+      6.56888e-02 ; 1.19&nbsp; 0.0157</div>
+    <ul>
+    </ul>
+    <p>Prepare the file tpr that will be directly used in the minimization for
+      neutral molecules whereas it is used to add ion(s) when the molecule is
+      charged</p>
+    <p></p>
+    <div id="Instr">gmx grompp -f em.mdp -c mol_test_wat.gro -p
+      mol_wat_fin_mec_GMX.top -o em.tpr</div>
+    <p>Now <b>if the molecule is ionized</b>, it is mandatory to balance the
+      number of charges by the addition of a counter ion, To add ions, the file
+      tpr is required</p>
+    <div id="Instr">gmx genion -s em.tpr -o mol_test_wat_fin.gro -p
+      ach_GMX_1.top -pname NA -nname CL -neutral</div>
+    <ul>
+      <li>Select the option related to chloroform option</li>
+    </ul>
+    <p>Check the resulting gro file to be sure that ion(s) was(were) added and
+      check that topology was modified according to the added ion(s)</p>
+    <p>If ions were added, rebuild the tpr file</p>
+    <div id="Instr">gmx grompp -f em.mdp -c mol_test_wat.gro -p
+      mol_wat_fin_mec_GMX.top -o em.tpr</div>
+    <p>and run the test minimization</p>
+    <div id="Instr">gmx mdrun -ntmpi 1 -v -deffnm em</div>
+    <p>Check the output em.gro with VMD</p>
+    <p>Check the result with VMD</p>
+    <h3>Setup MD runs for MSM </h3>
     <p>Now, the setup of MD simulations has to be carried out to all the
       conformations selected from the Conformational Sampling / Cluster step.</p>
     <p>In principle, every MD simulation will run for 100 ns, thus 100
@@ -210,47 +326,108 @@
       suggest the new conformations for the remaining simulations.</p>
     <p>Firstly, select mol_01-50.mol2 conformations.</p>
     <p>Then, check the consistency between the selected conformations and the
-      mec used in the paramterization</p>
+      MEC used in the parametrization</p>
     <ul>
       <li>Check the name of the residue, that it must be the same</li>
       <li>Check the order of the atoms, that must be the same</li>
     </ul>
+    <p>All steps are collected in bash scripts that allow the automation of the
+      process.</p>
+    <h4>Step 0. Preparation of directory tree</h4>
+    <p>Create the working directory and the run the script <i>md_step0_setupdir.sh</i></p>
+    <div id="Instr"># Usage: ./md_step0.sh <br>
+      # setup of the directories<br>
+      <br>
+      mkdir diagn<br>
+      mkdir md_out<br>
+      mkdir mol2<br>
+      <br>
+      mkdir traj<br>
+      mkdir traj_msm<br>
+      <br>
+      mkdir scripts<br>
+      <br>
+      # File list<br>
+      #&nbsp;&nbsp; em.mdp<br>
+      #&nbsp;&nbsp; eq-1.mdp<br>
+      #&nbsp;&nbsp; eq-2.mdp<br>
+      #&nbsp;&nbsp; eq-3.mdp<br>
+      #&nbsp;&nbsp; eq-4.mdp<br>
+      #&nbsp;&nbsp; production.mdp<br>
+      #&nbsp;&nbsp; production_BriefForDebug.mdp<br>
+      <br>
+      mkdir top<br>
+      <br>
+      # File list<br>
+      #&nbsp;&nbsp; mol.itp<br>
+      #&nbsp;&nbsp; mol.top<br>
+      #&nbsp;&nbsp; CHL_Box.pdb (if the simulation is run in chloroform)<br>
+      #&nbsp;&nbsp; CHL.itp (the should be move in the root simulation
+      directory)<br>
+    </div>
+    <p>The script makes all the directories.</p>
+    <p>Copy the mol2 files in the directory mol2.</p>
+    <ul>
+      <li>If you only need to run simulations on some mol2 files, you can create
+        subdirectories to move unnecessary files to. The simulation scripts run
+        on the mol2 file located in the mol2 root directory</li>
+    </ul>
+    <h3>Step 1. Setup and minimization</h3>
+    <p>Run the script: <i>./md_step1.sh basenam</i>e</p>
+    <div id="Instr"># Usage: ./md_step1.sh root_name<br>
+      # root_name: is the root name of the generated topology file<br>
+      <br>
+      export GMX_MAXBACKUP=-1<br>
+      <br>
+      for f in ./mol2/*.mol2; do<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; name=$(basename $f .mol2)<br>
+      <br>
+      &nbsp;&nbsp;&nbsp; echo $name<br>
+      &nbsp;&nbsp;&nbsp; cp mol2/$name.mol2 .<br>
+      &nbsp;&nbsp;&nbsp; obabel -imol2 $name.mol2 -opdb -O $name.pdb<br>
+      &nbsp;&nbsp;&nbsp; gmx editconf -f $name.pdb -o $name.gro -bt cubic -box
+      3.5 3.5 3.5<br>
+      &nbsp;&nbsp;&nbsp; cp top/$1_GMX.top $name.top<br>
+      &nbsp;&nbsp;&nbsp; cp top/$1_GMX.itp .<br>
+      &nbsp;&nbsp;&nbsp; gmx solvate -cp $name.gro -o ${name}_sol.gro -p
+      $name.top -cs top/CHL_Box.pdb<br>
+      &nbsp;&nbsp;&nbsp; gmx grompp -f scripts/em.mdp -c ${name}_sol.gro -p
+      $name.top -o em.tpr<br>
+      &nbsp;&nbsp;&nbsp; echo 4 | gmx genion -s em.tpr -o ${name}_sol.gro -p
+      $name.top -pname NA -nname CL -neutral<br>
+      &nbsp;&nbsp;&nbsp; gmx grompp -f scripts/em.mdp -c ${name}_sol.gro -p
+      $name.top -o em.tpr<br>
+      &nbsp;&nbsp;&nbsp; mpirun -np 1 mdrun -deffnm em -cpt 1 -cpo
+      em_restart.cpt<br>
+      &nbsp;&nbsp;&nbsp; cp em.gro md_out/${name}_sol_em.gro<br>
+      &nbsp;&nbsp;&nbsp; mv ${name}_sol.gro md_out<br>
+      <br>
+      done<br>
+      <br>
+      mv *.gro md_out<br>
+      rm *.mol2<br>
+      rm *.pdb<br>
+      rm em*<br>
+    </div>
+    <p>Some remarks:</p>
+    <ul>
+      <li>the basename must be the name used for the conformational
+        sampling/minimization procedure</li>
+      <li>in the editconf the cubic box dimensions are fixed to 3.5 but the
+        dimensions have to be checked to be sure that the molecule is well
+        positioned inside the box</li>
+      <li>finally, the number of solvent molecules could be different in the gro
+        file producing an error because in the root topology file the number of
+        chloroform molecules is fixed, in this case it is necessary to modify
+        manually the number of solvent molecules</li>
+    </ul>
+    <p>To check if the run has finished without error, it is possible to count
+      top files, their number must be the same of the number of mol2 files.</p>
+    <div id="Instr">ls *.top | wc -l<br>
+      ls mol2/*.mol2 | wc -l</div>
     <p><br>
     </p>
-    <p>cp mol2/ach_wat_01.mol2 .</p>
-    <p>obabel -imol2 ach_wat_01.mol2 -opdb -O ach_wat_01.pdb</p>
-    <p>gmx editconf -f ach_wat_01.pdb -o ach_wat_01.gro -bt cubic -box 3.0 3.0
-      3.0</p>
-    <p>cp topology/ach_wat.top ach_wat_01.top</p>
-    <p>gmx solvate -cp ach_wat_01.gro -o ach_wat_01_sol.gro -p ach_wat_01.top</p>
-    <p>gmx grompp -f scripts/em.mdp -c ach_wat_01_sol.gro -p ach_wat_01.top -o
-      em.tpr</p>
-    <p>gmx genion -s em.tpr -o ach_wat_01_sol.gro -p ach_wat_01.top -pname NA
-      -nname CL -neutral</p>
-    <p>gmx grompp -f scripts/em.mdp -c ach_wat_01_sol.gro -p ach_wat_01.top -o
-      em.tpr</p>
-    <p>mpirun -np 1 mdrun -deffnm em -cpt 1 -cpo em_restart.cpt</p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <p><i><br>
-      </i></p>
-    <p><br>
-    </p>
-    <p>From menus: <i>Tools </i>- <i>MD/Ensemble Analysis</i> - <i>MD Movie</i>
-    </p>
-    <ol>
-      <li>Trajectory format: PDB</li>
-    </ol>
     <br>
     <h2> </h2>
     <p> </p>
