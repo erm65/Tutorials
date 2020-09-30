@@ -422,8 +422,8 @@
         chloroform molecules is fixed, in this case it is necessary to modify
         manually the number of solvent molecules</li>
     </ul>
-    <p>To check the run has finished without error, it is possible to count top
-      files, their number must be the same of the number of mol2 files.</p>
+    <p>To check if the run has finished without error, it is possible to count
+      top files, their number must be the same of the number of mol2 files.</p>
     <div id="Instr">ls *.top | wc -l<br>
       ls mol2/*.mol2 | wc -l</div>
     <p><br>
