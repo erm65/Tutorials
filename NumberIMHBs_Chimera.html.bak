@@ -3,6 +3,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <title>NumberIMHBs_Chimera</title>
+    <link rel="stylesheet" href="./styles.css">
   </head>
   <body>
     <h1>Number of IMHBs (Chimera)</h1>
@@ -20,9 +21,77 @@
     <p>Generally, the output of the conformational sampling is in multi-mol2
       format, thus it must be converted.</p>
     <h3>Conversion of multi-mol2 to multi-pdb</h3>
-    <p><br>
-    </p>
-    <p><br>
+    <p>Launch OpenBabelGUI</p>
+    <ul>
+      <li>Select mol2 as the input format</li>
+      <li>Click on the file selection window to select the mol2 file</li>
+      <li>Select pdb format as output format</li>
+      <li>In the text field <i>Output file</i> digit the name of the converted
+        file</li>
+      <ul>
+        <li>Use the same name of the input file changing the extension (from
+          mol2 to pdb)</li>
+      </ul>
+      <li>Click on CONVERT button</li>
+      <ul>
+        <li>The new file should be created in the same directory</li>
+      </ul>
+    </ul>
+    <h3>Input of the conformers in Chimera </h3>
+    <p>Launch Chimera</p>
+    <ul>
+      <li>Tools - MD/Ensemble Analysis - MD Movie</li>
+      <ul>
+        <li>Select PDB as Trajectory Format</li>
+        <li>Select PDB frames contained in <i>single file</i> option</li>
+        <ul>
+          <li>Use the <i>Browse </i>to navigate to the working directory,
+            click on the name on the working pdb file and click on <i>Set Input
+              location</i></li>
+        </ul>
+        <li>Click on the <i>ok</i> button</li>
+        <li>The conformers are loaded as a trajectory and are visible in Chimera</li>
+        <ul>
+          <li>It is possible to navigate through the conformations using the
+            commands in the tool</li>
+        </ul>
+      </ul>
+    </ul>
+    <h3>Determination of IMHBs</h3>
+    <ul>
+      <ul>
+        <ul>
+        </ul>
+      </ul>
+      <li>In the MD Movie panel click on the <i>Per-Frame</i> label and then <i>Define
+          script</i></li>
+      <ul>
+        <li>A windows named <i>Per-Frames Commands</i> appears</li>
+      </ul>
+      <li>In the <i>Per-Frames Commands</i> windows digit:</li>
+    </ul>
+    <div id="Instr">hbonds</div>
+    <ul>
+      <ul>
+        <li>Click the <i>Apply </i>bottom</li>
+      </ul>
+      <li>Tools - Utilities - Reply Log</li>
+      <ul>
+        <li>A <i>Reply Log</i> windows is shown</li>
+        <li>Click on the <i>Clear bottom</i> to clear all the text in the <i>Reply
+            Log</i></li>
+      </ul>
+      <li>In the MD Movie windows</li>
+      <ul>
+        <li>deselect the <i>Loop </i>option</li>
+        <li>click on the &gt; bottom to launch the calculation on the whole
+          conformer ensemble </li>
+        <li>When the calculation was performed on the whole ensemble save the <i>Reply
+            Log</i> content clicking on <i>Save </i>bottom in the <i>Reply
+            Log</i> window</li>
+      </ul>
+    </ul>
+    <p>Finally, click on the <i>Quit </i>bottom in the MD Movie panel to exit
     </p>
     <p><br>
     </p>
