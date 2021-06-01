@@ -63,6 +63,12 @@
         <ul>
         </ul>
       </ul>
+      <li>Tools - Utilities - Reply Log</li>
+      <ul>
+        <li>A <i>Reply Log</i> windows is shown</li>
+        <li>Click on the <i>Clear bottom</i> to clear all the text in the <i>Reply
+            Log</i></li>
+      </ul>
       <li>In the MD Movie panel click on the <i>Per-Frame</i> label and then <i>Define
           script</i></li>
       <ul>
@@ -74,12 +80,10 @@
     <ul>
       <ul>
         <li>Click the <i>Apply </i>bottom</li>
-      </ul>
-      <li>Tools - Utilities - Reply Log</li>
-      <ul>
-        <li>A <i>Reply Log</i> windows is shown</li>
-        <li>Click on the <i>Clear bottom</i> to clear all the text in the <i>Reply
-            Log</i></li>
+        <ul>
+          <li>This step is important to find IMHBs for all conformers because
+            the next step starts to register IMHBs from the second conformer</li>
+        </ul>
       </ul>
       <li>In the MD Movie windows</li>
       <ul>
