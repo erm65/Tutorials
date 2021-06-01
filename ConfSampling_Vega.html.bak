@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Conformational sampling with Vega</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <h1>Conformational Sampling (Vega)</h1>
+    <h2>Introduction</h2>
+    <p>Conformational sampling performed with Vega using default parameters.</p>
+    <p>Assign charges and potential:<br>
+      FF: SP4<br>
+      Charges: Ammp-Mom<br>
+      Minimization (1 run with default parameters)<br>
+      Dielectric Constant: 80.0/4.81 wat(ca)/chl(ne)<br>
+      Conf. Sampling<br>
+      Default parameters with Boltzman Jump)<br>
+      Torsion: (Mod. Torsion - Modify - Add Torsion - Flexible)<br>
+      Output: save trajectory, energy and output<br>
+    </p>
+    <h2>Data input</h2>
+    <h3>Input </h3>
+    <p>Launch Vega</p>
+    <ul>
+      <li>Tools - MD/Ensemble Analysis - MD Movie</li>
+      <ul>
+        <li>Select PDB as Trajectory Format</li>
+        <li>Select PDB frames contained in <i>single file</i> option</li>
+        <ul>
+          <li>Use the <i>Browse </i>to navigate to the working directory,
+            click on the name on the working pdb file and click on <i>Set Input
+              location</i></li>
+        </ul>
+        <li>Click on the <i>ok</i> button</li>
+        <li>The conformers are loaded as a trajectory and are visible in Chimera</li>
+        <ul>
+          <li>It is possible to navigate through the conformations using the
+            commands in the tool</li>
+        </ul>
+      </ul>
+    </ul>
+    <br>
+  </body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Conformational sampling with Schrodinger</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <h1>Conformational Sampling (Vega)</h1>
+    <h2>Introduction</h2>
+    <p>Conformational sampling performed with Schrodinger software using default
+      parameters.</p>
+    <p>Method<br>
+      Schrodinger conf. Search<br>
+      ca: cation in water (selected water solvent)<br>
+      ne: neutral in chloroform (selected chloroform solvent)</p>
+    <h2>Data input</h2>
+    <h3>Input </h3>
+    <p>Launch Vega</p>
+    <p><br>
+    </p>
+    <p style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
+          alt="Home" title="Home" style="width: 64px; height: 64px;"></a></p>
+  </body>
+</html>
