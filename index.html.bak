@@ -9,6 +9,10 @@
     <h1>CASSMedChem tutorials page</h1>
     <h2>Introduction</h2>
     <p>The tutorials are intended for internal use in CASSMedChem laboratory</p>
+    <h2>Conformational sampling</h2>
+    <h2>3D-descriptors calculation</h2>
+    <p><br>
+    </p>
     <h2>List</h2>
     <ul>
       <li><a href="BRMatlab.html" title="BRMatlab" target="_blank">BRMatlab</a></li>
