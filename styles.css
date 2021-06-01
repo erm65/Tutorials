@@ -61,6 +61,8 @@ h6{font-size:16px}
 #Instr { 
 	background-color: #eeffcc;
 	padding-top: 10px;
+	padding-left: 5px;
+	padding-right: 5px;
 	padding-bottom: 10px;
 	border: 1px solid green;
 	font-family: Courier, monospace;
