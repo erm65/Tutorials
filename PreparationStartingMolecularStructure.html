@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Preparation of the starting molecular structure</title>
+  </head>
+  <body>
+    <h1>Setup of the starting 3D structure</h1>
+    <h2>Case 1. The structure is downloaded by a X-Ray database (CSD or PDB)</h2>
+    <p>Run Maestro</p>
+    <p>Select&nbsp; a convenient working directory: <i>File </i>- <i>Change
+        Working Directory</i> and select the directory</p>
+    <p>Import starting structures: <i>File </i>- <i>Import Structures</i></p>
+    <p>Carefully check if the structure is correct and eventually use edit tools
+      to correct the structure and delete not useful atoms (e.g. solvent) </p>
+    <h2>Case 2. The structure is build through the SMILES code</h2>
+    <p>The SMILES can be obtained in two ways:</p>
+    <ul>
+      <li>it can be downloaded from various sources, e.g. ChemSpider</li>
+      <li>the molecule is drawn in MarvinSketch and then is copied as SMILES
+        using the option <i>Edit </i>- <i>Copy as SMILES</i>.</li>
+    </ul>
+    <h2>Conversion of SMILES in a 3D structure</h2>
+    <p>The SMILES conversion depends on the project and it very <b style="color: red;">IMPORTANT
+        </b>to establish is the project is under a disclosure agreement with a
+      company or not.</p>
+    <p><span style="color: red;">Before starting with the following steps, ask
+        to your director</span>.</p>
+    <h3>The molecule is not involved in a disclosure agreement</h3>
+    <p>The code is converted in a 3D structure using CORINA (<a href="https://www.mn-am.com/online_demos/corina_demo">https://www.mn-am.com/online_demos/corina_demo</a>)</p>
+    <ul>
+      <li>So far, CORINA represents the most robust SMILES converter</li>
+      <li>In particular, it is able to efficiently handle chiral symbols</li>
+    </ul>
+    <p>In Corina, save the structure as mol file to maintain information about
+      bond order.</p>
+    <h3>The molecule is involved in a disclosure agreement</h3>
+    <p>The molecule cannot be prepared using online tools because they do not
+      guarantee disclosure agreement conditions.</p>
+    <ul>
+      <li>Open the drawn molecule in MarvinSketch</li>
+      <li>Click on <i>Structure </i>- <i>Clean in 3D</i></li>
+      <li><i>File </i>- <i>Save As</i> - <i>select mol2 option</i></li>
+      <ul>
+        <li>Use the same name of Marvin file</li>
+      </ul>
+      <li>Check the structure (see below)</li>
+    </ul>
+    <p><br>
+    </p>
+    <ul>
+    </ul>
+    <h2>Check of the structure</h2>
+    <p> The check of the structure is mandatory and fundamental before
+      submitting the structure to the next steps.</p>
+    <p>Use Maestro (educational or registered version) to load, edit and check
+      the structure.</p>
+    <p>In particular, these properties must be checked:</p>
+    <ul>
+      <li>Bond order</li>
+      <li>Atoms valency</li>
+      <li>Formal atom charge (and molecule charge)</li>
+      <li>Ionization</li>
+    </ul>
+    <p>Furthermore, it is better to check the name of the molecule and the name
+      of the residue loading the structure in an editing software</p>
+    <p>Two fields should be carefully checked and modified if it is required:</p>
+    <ul>
+      <li>@&lt;TRIPOS&gt;MOLECULE: the name should be checked and modified
+        deleting extensions, directory tree and other not useful names. In
+        principle, the name of the molecule should be identical to the name of
+        the file.</li>
+      <li>@&lt;TRIPOS&gt;ATOM: after the the subs_id, the ID number of the
+        substructure containing the atom, the subs_name should be chosen
+        accordingly to the file name and preferably with three letters. The name
+        should be changed using the "replace" tool in every editor software
+        (e.g. Notepad+). Pay attention to the last field in the file
+        (@&lt;TRIPOS&gt;SUBSTRUCTURE) where the name should be defined and thus
+        it also has to be replaced.</li>
+      <ul>
+        <li>atom_id atom_name x y z atom_type [subst_id [subst_name [charge
+          [status_bit]]]</li>
+      </ul>
+    </ul>
+    <p>Instructions:</p>
+    <ul>
+      <li><i>File </i>- <i>Change Working Directory</i></li>
+      <ul>
+        <li>Select the directory where there is the structure of interest</li>
+      </ul>
+      <li><i>File </i>- <i>Import Structures</i></li>
+      <ul>
+        <li>Select the file with the 3D structure (e.g. the mol2 file prepared
+          with MarvinSketch)</li>
+        <li>Generally, click to import with default options</li>
+      </ul>
+      <li>If the file contains unnecessary atoms (e.g. solvent molecules in
+        files retrieved from CSD or PDB)</li>
+      <ul>
+        <li>Use the <i>Workspace Navigator</i> to select the parts of molecule
+          that you wants to delete or select the molecule and then invert
+          selection to delete all it is not necessary</li>
+      </ul>
+      <li><i>Select </i>- <i>All</i></li>
+    </ul>
+    <ul>
+      <li><i>Edit </i>- <i>Assign </i>- <i>Bond orders</i> </li>
+      <ul>
+        <li>Bond orders are automatically assigned</li>
+        <li>Check that the assignment is correct</li>
+      </ul>
+    </ul>
+    <p></p>
+    <ul>
+      <li>Then, use <i>Build </i>- <i>Draw </i>tool to eventually correct
+        the molecule using the 2D representation as reference</li>
+    </ul>
+    <ul>
+      <li>Finally, <i>Select </i>- <i>All </i>and <i>Add Hydrogens</i></li>
+      <ul>
+        <li>Any missing hydrogen atoms are added</li>
+      </ul>
+    </ul>
+    <ul>
+      <li>When the structure is edited, export the file as mol2 format: <i>File
+        </i>- <i>Export Structures</i></li>
+      <ul>
+        <li>If the name of input and output files are the same you can overwrite
+          the input file that is not useful</li>
+        <li>Exit from Maestro</li>
+        <ul>
+          <li>Generally, it is not necessary to save the project</li>
+        </ul>
+      </ul>
+    </ul>
+    <ul>
+      <li>Finally, the checked structure is saved in a file mol.mol2, where <i>mol
+          </i>is the name of the molecule.</li>
+      <ul>
+        <li>The name <i>mol </i>will be kept for all steps thus a short name
+          should be chosen.</li>
+      </ul>
+    </ul>
+    <p><span style="color: red;"><i>To be edit</i>. Furthermore, the <i>mol </i>name
+        should be also abbreviated with a 3 letters short name that will be
+        saved in the Tripos MOLECULE field and will be used in the subs_name
+        field in the ATOM lines (the field where the name of the amino acids are
+        reported) into the mol2 file.</span></p>
+    <br>
+    <p></p>
+    <p></p>
+    <div style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
+          alt="Home" title="Home" style="width: 64px; height: 64px;"></a></div>
+  </body>
+</html>

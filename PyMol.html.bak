@@ -42,7 +42,7 @@
         <li>Pmw&#8209;2.0.1&#8209;py3&#8209;none&#8209;any.whl</li>
       </ul>
     </ul>
-    <p>Install Python (if necessary, before to begin the installation check is
+    <p>Install Python (if necessary, before to begin the installation check if
       the software is present in your PC)</p>
     <ul>
       <li>Choose the Customize option</li>
@@ -59,6 +59,7 @@
     <ul>
       <li>Where it is important the correct version of pip whereas
         pymol_launcher does not require any further specifications</li>
+      <li>Finally, the PyMol.exe program will be found inside the Python folder</li>
     </ul>
     <h3>Matteo's plugin</h3>
     <p>Copy the following lines in a file named psa_3d.py located in
@@ -93,8 +94,8 @@
       <li>It should be possible that it is necessary to exit and rerun PyMOL to
         activate the plugin</li>
     </ul>
-    <p>When the plugin works, the PSA could be calculated with the following
-      instruction</p>
+    <p>When the plugin works, the PSA (SA 3D PSA – NOH+0.6) could be calculated
+      with the following instruction:</p>
     <div id="Instr">
       <p>set solvent_radius=1.4; set dot_density=4; set dot_solvent=1; psa3d</p>
     </div>

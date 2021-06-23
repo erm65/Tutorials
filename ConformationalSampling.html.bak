@@ -122,7 +122,8 @@
       report (extension .rpt) that will bu used for the final report.</p>
     <h3>Step 5. Table preparation</h3>
     <p>Run Vega</p>
-    <p>In Vega: <i>File </i>- <i>Open </i>and select filename_oe_sz.mol2</p>
+    <p>In Vega: <i>File </i>- <i>Open </i>and select
+      filename_mol_wat_final.mol2</p>
     <p>The file mol2 is uploaded in Vega and the "<i>Analysis of the trajectory</i>"
       window is opened</p>
     <p>In the "<i>Analysis of the trajectory</i>" window, select a property
