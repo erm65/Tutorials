@@ -7,6 +7,35 @@
   </head>
   <body>
     <h1>Conformers analysis</h1>
+    <h2>Calculation of properties with Vega<br>
+    </h2>
+    Run Vega
+    <ul>
+      <li><i>File </i>- <i>Open </i>and select filename_mol_wat_final.mol2</li>
+      <ul>
+        <li>The file mol2 is uploaded in Vega and the "<i>Analysis of the
+            trajectory</i>" window is opened</li>
+      </ul>
+      <li>In the "<i>Analysis of the trajectory</i>" window, select a property
+        and click the <i>ok</i> button, Vega calculates and plots the property</li>
+      <ul>
+        <li>Properties that we usually use</li>
+        <ul>
+          <li>Polar surface area, PSA;</li>
+          <li>Gyration radius, RGyr;</li>
+          <li>Molecular Lipophilicity Potentials to calculate the Virtual Log P
+            (<i>less used, ask to the director</i>)</li>
+        </ul>
+      </ul>
+      <li>Click on <i>"Save as csv file</i>" to save the results</li>
+      <li>Import the results in Excel and merge with the energy output of Szybki</li>
+      <ul>
+        <li>Pay attention in the merging to avoid errors</li>
+        <li>The order of the Vega output MUST be the same of the Szybki output
+          to guarantee the perfect correspondence between energy and property
+          values foreach conformer</li>
+      </ul>
+    </ul>
     <h2>Cluster analysis</h2>
     <p>Cluster analysis is carried out using Chimera software but before the
       analysis the mol2 output of Omega has to be converted in pdb format by
@@ -41,6 +70,23 @@
       geometry criteria. Using the output of Szybki the minimum energy conformer
       should be find and used for the next steps (Chimera does not calculate any
       energy values). </p>
+    <p>Python script to read Chimera cluster output and to write clusters in
+      columns in order to merge with szybki output</p>
+    <div id="Instr">file = open("MZ1_wat_cluster_final.csv","r")<br>
+      fileout = open("MZ1_wat_cluster_final_col.csv","w")<br>
+      i=0<br>
+      j=0<br>
+      for line in file:<br>
+      &nbsp;&nbsp;&nbsp; i=0<br>
+      &nbsp;&nbsp;&nbsp; fields=line.split(" ")<br>
+      &nbsp;&nbsp;&nbsp; indice=len(fields)-1<br>
+      &nbsp;&nbsp;&nbsp; for ind in range(indice):<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; print (j, fields[i].rstrip())<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; fileout.writelines([str(j) + "
+      ; " + fields[i].rstrip()&nbsp; + "\n"])<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; i=i+1<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <br>
+      &nbsp;&nbsp;&nbsp; j=j+1</div>
     <p><br>
     </p>
     <p><br>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <title>ConfSampling_SzybkiOmega</title>
+  </head>
+  <body>
+    <h1>Conformational sampling (Szybki/Omega)</h1>
+    <h2>Setup of the environment</h2>
+    <h3> Windows</h3>
+    <p>Run the "<i>OpenEye-Applications Ver</i>" command line</p>
+    <h3>Linux</h3>
+    <p>The setup depends on the workstation but, in general, the license file,
+      the required libraries and the binary executable should be found by the
+      software.</p>
+    <div id="Instr">export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH<br>
+      export PATH=/opt/openeye/bin:$PATH<br>
+      export OE_LICENSE=/opt/openeye/oe_license.txt<br>
+    </div>
+    <h2>First minimization with Szybki </h2>
+    <p>The goal of this step is the setup of a correct and minimized structure
+      that will be the starting point of the next steps. It is important that
+      this structure is careful checked from a chemical point of view and that
+      the file is formally correct. Check bond order, charges, names and all it
+      was discussed before.</p>
+    <p>Minimization of the mol2 file with default parameters, now the dielectric
+      setup is not important yet.</p>
+    <p>In the "<i>OpenEye-Applications Ver</i>" command line, run Szybki</p>
+    <div id="Instr"> szybki -mpi_np 8 -in mol.mol2 -out mol_sz.mol2 -prefix
+      mol_sz</div>
+    <h2>Conformations generation</h2>
+    The file prepared in the step above is submitted to Omega for the
+    conformational sampling.
+    <p>The most recent versions of Omega does not implement a search dependent
+      on the environment, thus the dielectric constants will be taken into
+      account in the next steps.<br>
+    </p>
+    <div id="Instr">oeomega classic -commentEnergy true -ewindow 10 -maxconfs
+      1000000 -strict -in mol_sz.mol2 -out mol_oel.mol2 -prefix mol_oel -mpi_np
+      4</div>
+    <p>For cyclic compounds</p>
+    <div id="Instr">oeomega macrocycle -commentEnergy true -ewindow 10 -maxconfs
+      1000000 -strict -in mol_sz.mol2 -out mol_oel.mol2 -prefix mol_oel -mpi_np
+      4</div>
+    <p>Then the conformations are definitively minimized submitting the Omega
+      the output to Szybki. This software also calculates and writes the final
+      energy of the conformers.</p>
+    <p>The command to run a minimization in chloroform is:</p>
+    <div id="Instr">szybki -mpi_np 4 -solv_dielectric 4.81 -current_charges true
+      -ff mmff94s -solventPB -solventCA 0.005 -prefix mol_sz_chl -in
+      mol_oel.mol2 -out mol_sz_chl.mol2 -report</div>
+    <p>The command to run a minimization in water is:</p>
+    <div id="Instr">szybki -mpi_np 4 -solv_dielectric 80.0 -current_charges true
+      -ff mmff94s -solventPB -solventCA 0.005 -prefix mol_sz_chl -in
+      mol_oel.mol2 -out mol_sz_chl.mol2 -report</div>
+    <p>Szybki writes the final energy of the conformations in a report
+      (extension .rpt) that will be used for the final report. </p>
+    <p>The dielectric constant should be set on the basis of the explored
+      environment. Some useful values are the following: </p>
+    <ul>
+      <li>solvent (solv, short name that should be used in the next steps):
+        dielectric constants</li>
+      <ul>
+        <li>water (wat): 80</li>
+        <li>dmso (dms): 47</li>
+        <li>methanol (met): 32.6</li>
+        <li>acetonitrile (acn): 21.01</li>
+        <li>chloroform (chl): 4.81</li>
+        <li>1,4-dioxane (dxa): 2.21</li>
+        <li>cyclohexane (hex): 2.02</li>
+      </ul>
+    </ul>
+    <div style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
+
+          alt="Home" title="Home" style="width: 64px; height: 64px;"></a></div>
+  </body>
+</html>

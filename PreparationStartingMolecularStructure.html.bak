@@ -128,14 +128,20 @@
       <ul>
         <li>If the name of input and output files are the same you can overwrite
           the input file that is not useful</li>
+        <li>Exit from Maestro</li>
+        <ul>
+          <li>Generally, it is not necessary to save the project</li>
+        </ul>
       </ul>
     </ul>
     <ul>
       <li>Finally, the checked structure is saved in a file mol.mol2, where <i>mol
-          </i>is the name of the molecule. </li>
+          </i>is the name of the molecule.</li>
+      <ul>
+        <li>The name <i>mol </i>will be kept for all steps thus a short name
+          should be chosen.</li>
+      </ul>
     </ul>
-    <p>The name <i>mol </i>will be kept for all steps thus a short name should
-      be chosen.</p>
     <p><span style="color: red;"><i>To be edit</i>. Furthermore, the <i>mol </i>name
         should be also abbreviated with a 3 letters short name that will be
         saved in the Tripos MOLECULE field and will be used in the subs_name
