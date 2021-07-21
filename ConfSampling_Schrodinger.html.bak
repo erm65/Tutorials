@@ -12,15 +12,95 @@
       parameters.</p>
     <p>To perform the conformational analysis the licensed Schrodinger software
       is required. </p>
-    <p>The licensed software is installed on the workstation, thus go to the
-      Workstation Tips page for the instructions for the remote connections.</p>
+    <p>The licensed software is installed on the workstation, thus go to the <a
+        href="WorkstationTips.html">Workstation Tips</a> page for the
+      instructions for the remote connections.</p>
+    <h2>Workstation setup</h2>
+    <p>Setup the environment variables:</p>
+    <div id="Instr"> module load cuda/cuda-9.1<br>
+      module load mpi/openmpi-2.0.4_Cuda<br>
+      export SCHRODINGER=/opt/schrodinger2021-1/ </div>
+    <p>It is mandatory to check if the license manager is up.</p>
+    <div id="Instr">ps -ef | egrep 'lmgrd|SCHROD'</div>
+    <p>If the results is similar to this:</p>
+    <p><i>username 2123&nbsp; 1954&nbsp; 0 17:13 pts/1&nbsp;&nbsp;&nbsp;
+        00:00:00 grep -E --color=auto lmgrd|SCHROD</i></p>
+    <p>It means that the license manager is down, thus it must be started.</p>
+    <div id="Instr">$SCHRODINGER/licadmin STOP<br>
+      $SCHRODINGER/licadmin START</div>
+    <p>Then,check again the license manager status.</p>
+    <div id="Instr">ps -ef | egrep 'lmgrd|SCHROD'</div>
+    <p>Now, the results should be similar to this:</p>
+    <p><i>username 9712&nbsp; 9709&nbsp; 9 17:34
+        ?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 00:00:01 SCHROD -T
+        130.192.140.110 11.17 7 -c :/opt/schrodinger2021-1/license.txt: -srv
+        mCPk9OT3mYyUEwshmiQCuQTcBkZfDD1cICUG2tx0YWyQSoKkXXuf2pXnaAFiJBa
+        -daemon_port cf08 --lmgrd_start 60f83e9f -reuseaddr -vdrestart 0 -l
+        /opt/schrodinger2021-1/lmgrd.log</i></p>
+    <p>If the result of the check is this after the first test, it means that
+      the license manager is up and no operations are needed.</p>
+    <h2>Load molecule(s)</h2>
+    <p>Move to the working directory where the molecules are located in mol2
+      format using Linux <i>cd </i>command.</p>
+    <p>Then run Maestro</p>
+    <p>$SCHRODINGER/Maestro</p>
+    <i>File - Change Working Directory</i>
+    <p>Select the working directory using the selection window</p>
+    <ul>
+      <li>Probably, the selection window is opened in the directory where you
+        launched Maestro</li>
+    </ul>
+    <p><i>File - Import structures</i></p>
+    <ul>
+      <li>Select the structure(s) to be imported</li>
+      <li>If you import more than one structure, is better to work with distinct
+        projects: one for each electrical state (neutral, positive charged and
+        negative charged)</li>
+    </ul>
+    <p>Check the structures</p>
+    <ul>
+      <li>In the Workspace navigator (on the right) you can select the <i>In </i>circle
+        to view each structure</li>
+      <li>For each structure assign the correct bond order</li>
+      <ul>
+        <li>Double click on one atom of the molecule to select all the atoms of
+          the molecule</li>
+        <li><i>Edit - Assign - Bond orders</i></li>
+      </ul>
+    </ul>
+    <p>Save the project</p>
+    <p>File - Save Project As</p>
+    <p>Run the conformational analysis</p>
+    <ul>
+      <li>Click on the Tasks button at the top right</li>
+      <li>Digit Conformational search in the window</li>
+      <li>Select Conformational Search Macromodel</li>
+      <li>Select the molecules in the ENTRY LIST</li>
+      <ul>
+        <li>The names have to be highlighted in cyan</li>
+      </ul>
+      <li>Change three parameters</li>
+      <ul>
+        <li>In the Use structures from selection menu, choose Project Table
+          (selected entries)</li>
+        <li>Select the solvent in the drop down menu</li>
+        <li>Change the job name in the bottom with a name related to the
+          simulation</li>
+        <ul>
+          <li>In particular, mention explicitly the solvent</li>
+        </ul>
+      </ul>
+      <li>Click Run bottom</li>
+      <ul>
+        <li>Now you can close the setup window</li>
+        <li>Using the button Jobs it is possible to follow the job</li>
+        <li>Finally, jobs work in background thus it is possible to close
+          projects and exit from Maestro</li>
+      </ul>
+    </ul>
     <p><br>
     </p>
-    <p><br>
-    </p>
-    <p><br>
-    </p>
-    <p style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
+    <p style="text-align: right;"><a href="index.html" title="Index">T<img src="Images/home-button.jpg"
           alt="Home" title="Home" style="width: 64px; height: 64px;"></a></p>
   </body>
 </html>
