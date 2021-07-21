@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Workstation Tips</title>
+  </head>
+  <body>
+    <h1>Workstation tips</h1>
+    <h2>Remote connection</h2>
+    <p>Typically, work on the workstation is done from your notebook or remote
+      desktop.</p>
+    <h3>General procedure for the remote connection</h3>
+    <h4>Required software</h4>
+    <ul>
+      <li>It is mandatory the installation of the software GlobalProtect from
+        the UNITO intranet network (<a href="https://intranet.unito.it/display/SER/VPN+-+Accesso+da+remoto">VPN
+          - Accesso da remoto - Servizi - Intranet UNITO</a>).</li>
+      <ul>
+        <li>Ask to your director for the VPN activation.</li>
+      </ul>
+      <li>Download and install the free version of MobaXTerm (<a href="https://mobaxterm.mobatek.net/download.html">MobaXterm
+          Xserver with SSH, telnet, RDP, VNC and X11 - Download (mobatek.net)</a>)</li>
+    </ul>
+    <h4>Remote connection</h4>
+    <ul>
+      <li>Run <i>GlobalProtect </i>and login using the UNITO credentials to
+        activate the VPN</li>
+      <li>Run <i>MobaXTerm</i></li>
+      <li>The first time you have to create a New Session</li>
+      <ul>
+        <li>Menu <i>Session </i>- <i>New Session</i></li>
+        <ul>
+          <li>Click on SSH icon</li>
+          <li>Specify the remote host IP (ask to the director)</li>
+          <li>Specify the username (it is not mandatory, you can specify it
+            later)</li>
+          <li>Click ok</li>
+          <li>A terminal window appears</li>
+        </ul>
+        <li>Specify your login name that you uses on the <b>workstation</b></li>
+        <ul>
+          <li><b>The credentials on the workstation are not the UNITO
+              credentials</b></li>
+          <li>Workstation credential are released from CASSMedChem director</li>
+        </ul>
+      </ul>
+      <li>Bash shell is opened with your environment</li>
+    </ul>
+    <h2>Some basic Linux commands </h2>
+    <h3>Basic syntax</h3>
+    <p>The basic syntax of a Linux command is: <i>command option variables</i></p>
+    <ul>
+      <li>Often, the option are letters following minus symbol</li>
+      <li>E.g. <i>ls -l ./</i> : where <i>ls</i> is the command, <i>-l</i> is
+        the option and <i>./</i> is the variable</li>
+    </ul>
+    <h3>Working with the file tree</h3>
+    <ul>
+      <li>To know where you are</li>
+    </ul>
+    <p>pwd</p>
+    <ul>
+      <ul>
+        <li>You can see the directory where your are (<i>i.e.</i> at the
+          beginning your are in your home directory <i>/home/yourusername</i>)</li>
+      </ul>
+    </ul>
+    <ul>
+      <li>Copy command</li>
+    </ul>
+    <p></p>
+    <div id="Instr">cp <i>file1 file2</i></div>
+    <p></p>
+    <ul>
+      <ul>
+        <li><span class="Instr">copy file1 in file2<br>
+          </span></li>
+      </ul>
+    </ul>
+    <p></p>
+    <div id="Instr">cp -rL source.file destination.file</div>
+    <p></p>
+    <ul>
+      <ul>
+        <li>-r: recursively option</li>
+        <li>-L: copy the original file that is linked with as symbolic link</li>
+      </ul>
+    </ul>
+    <p>man <i>command</i></p>
+    <ul>
+      <li>show help for the command</li>
+    </ul>
+    <p>nvidia-smi</p>
+    <ul>
+      <li>monitoring Nvidia GPU</li>
+      <li>in particular, chem GPU-Util that show the percentage of utilization
+        of the CPU</li>
+    </ul>
+    <h2>module</h2>
+    <p>The setup of the environment can be done using the module tool installed
+      by Aethia</p>
+    <h3>Use</h3>
+    <p>To setup an environment present in the modulefiles</p>
+    <div id="Instr">module load modulefile</div>
+    <p>Checking the list of the modulefiles</p>
+    <div id="Instr">module avail</div>
+    <p>Showing the list of loaded modules</p>
+    <div id="Instr">module list</div>
+    <h3>Setup of a new modulefile</h3>
+    <p>Modulefiles are located in two directories</p>
+    <ul>
+      <li>/usr/share/Modules/modulefiles</li>
+      <li>/etc/modulefiles</li>
+    </ul>
+    <p>In such directories, some sub-directories contain the modulefiles that
+      will be loaded with module tool.</p>
+    <p>New modulfiles added in such directories are immediately recognized by
+      the module tool.</p>
+    <p>To use the correct syntax, it is better to copy an old file and modified
+      it.</p>
+    <p><b>Warning</b>: check the permissions of sub-directories (drwxr-xr-x) and
+      modlefiles (-rw-r--r--)</p>
+    <p> </p>
+    <p style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
+          alt="Home" title="Home" style="width: 64px; height: 64px;"></a></p>
+  </body>
+</html>

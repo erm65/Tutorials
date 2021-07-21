@@ -7,12 +7,16 @@
   </head>
   <body>
     <h1>Linux commands</h1>
-    <p><div id="Instr">cp <i>file1 file2</i></div></p>
+    <p></p>
+    <div id="Instr">cp <i>file1 file2</i></div>
+    <p></p>
     <ul>
       <li><span class="Instr">copy file1 in file2<br>
         </span></li>
     </ul>
-    <p><div id="Instr">cp -rL source.file destination.file</div></p>
+    <p></p>
+    <div id="Instr">cp -rL source.file destination.file</div>
+    <p></p>
     <ul>
       <li>-r: recursively option</li>
       <li>-L: copy the original file that is linked with as symbolic link</li>
@@ -39,8 +43,10 @@
     <div id="Instr">module list</div>
     <h3>Setup of a new modulefile</h3>
     <p>Modulefiles are located in two directories</p>
-    <p>/usr/share/Modules/modulefiles</p>
-    <p>/etc/modulefiles</p>
+    <ul>
+      <li>/usr/share/Modules/modulefiles</li>
+      <li>/etc/modulefiles</li>
+    </ul>
     <p>In such directories, some sub-directories contain the modulefiles that
       will be loaded with module tool.</p>
     <p>New modulfiles added in such directories are immediately recognized by
@@ -57,6 +63,5 @@
     </p>
     <ul>
     </ul>
-    
   </body>
 </html>

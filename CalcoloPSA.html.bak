@@ -87,8 +87,12 @@
     </ul>
     <p>Check the submission using <i>Options </i>- <i>Monitor</i></p>
     <p>When the calculations finish, save the results, <i>File - Save</i>.</p>
-    <p><br>
-    </p>
+    <p>Finally, save the results in mol2 format with charges, File - Save As</p>
+    <ul>
+      <li>Chose the name: in the suggested name change <i>.spartan</i> with <i>_PM3.mol2</i>
+      </li>
+      <li>Save and chose Electrostatic charges, Ok.</li>
+    </ul>
     <h4>PSA calculation with PyMol</h4>
     <p>3D PSA is calculated in <b>PyMol </b>1.7.0.1.</p>
     <p>The calculated surfaces include definitions where polar atoms were
@@ -98,7 +102,8 @@
     <p>Both molecular surface area (probe radius = 0 Å) and solvent accessible
       surface area (probe radius = 1.4 Å) were calculated in PyMol.</p>
     <p>Pymol 3D PSA commands:</p>
-    <p>SA 3D PSA – NOH+0.6 was calculated by running the following command:</p>
+    <p><b>SA 3D PSA</b> – NOH+0.6 was calculated by running the following
+      command:</p>
     <div id="Instr">set solvent_radius=1.4; set dot_density=4; set
       dot_solvent=1; psa3d </div>
     <p>M 3D PSA – NOH+0.6 was calculated by running the following command:</p>
@@ -106,6 +111,8 @@
     <p>where a Pymol plugin enabled calculation of 3D PSA for all objects in the
       current session (see <a href="PyMol.html">PyMol</a> for installation
       instructions).</p>
+    <p>The minimum value of <b>SA 3D PSA</b> was correlated with permeability
+      in Matteo's paper.</p>
     <p> </p>
     <p></p>
   </body>
