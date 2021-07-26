@@ -140,6 +140,8 @@
             <li><i>Properties</i>: <i>selected </i>and use the <i>select </i>options
               to select conformation options, Entry ID, Entry Name, Potential
               Energy, Relative Potential Energy, Serial Number</li>
+            <li><i>Delimiter</i>: <i>comma</i></li>
+            <li><i>File name</i>: the same name of mol2 file with extension csv</li>
           </ul>
         </ul>
       </ul>

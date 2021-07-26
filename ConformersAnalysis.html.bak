@@ -89,9 +89,8 @@
       &nbsp;&nbsp;&nbsp; j=j+1</div>
     <p><br>
     </p>
-    <p><br>
-    </p>
     <h2> </h2>
-    <p> </p>
+    <div style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
+          alt="Home" title="Home" style="width: 64px; height: 64px;"></a></div>
   </body>
 </html>
