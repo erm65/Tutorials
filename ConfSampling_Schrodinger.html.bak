@@ -70,6 +70,7 @@
     </ul>
     <p>Save the project</p>
     <p>File - Save Project As</p>
+    <h2>Conformational analylis</h2>
     <p>Run the conformational analysis</p>
     <ul>
       <li>Click on the Tasks button at the top right</li>
@@ -96,6 +97,57 @@
         <li>Using the button Jobs it is possible to follow the job</li>
         <li>Finally, jobs work in background thus it is possible to close
           projects and exit from Maestro</li>
+        <ul>
+          <li>Loading the project, the results will be added at the end of the
+            job</li>
+        </ul>
+      </ul>
+    </ul>
+    <h2>Analysis of the results</h2>
+    <p>Run Maestro if it is necessary following the procedure shown in <b>Load
+        molecule(s)</b></p>
+    <ul>
+      <li>File - Open Project</li>
+      <ul>
+        <li>Select the project</li>
+        <li>If the job is finished the results are automatically incorporated in
+          the Workplace Navigator</li>
+      </ul>
+      <li>Select the conformations of a single molecule in the Workplace
+        Navigator (highlighted in blue after selection)</li>
+      <li>Click on the right button of the mouse and select Export - Structures</li>
+      <ul>
+        <li>Check that <i>Structure source to be exported</i> option is set to
+          <i>Project Table (selected entries)</i></li>
+      </ul>
+      <li>Digit a <i>File name</i> with the extension mol2</li>
+      <ul>
+        <li>The structures are saved in a multimol2 file</li>
+        <li>Use a name that helps to remember the type of simulation performed,
+          in particular the used solvent and ionization state</li>
+      </ul>
+      <li>In Maestro select <i>Windows - Project Table</i></li>
+      <ul>
+        <li>The spreadsheet with Energy values is shown</li>
+        <li>If necessary select the entries correspondent to the conformations
+          previously exported in mol2 format (highlighted in blue after
+          selection)</li>
+        <li>In the Project Table window click on Data - Export - Spreadsheet</li>
+        <ul>
+          <li>In the Export window set:</li>
+          <ul>
+            <li><i>Entries</i>: <i>selected</i></li>
+            <li><i>Properties</i>: <i>selected </i>and use the <i>select </i>options
+              to select conformation options, Entry ID, Entry Name, Potential
+              Energy, Relative Potential Energy, Serial Number</li>
+          </ul>
+        </ul>
+      </ul>
+    </ul>
+    <ul>
+      <ul>
+        <ul>
+        </ul>
       </ul>
     </ul>
     <p><br>
