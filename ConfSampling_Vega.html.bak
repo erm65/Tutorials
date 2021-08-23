@@ -8,38 +8,68 @@
   <body>
     <h1>Conformational Sampling (Vega)</h1>
     <h2>Introduction</h2>
-    <p>Conformational sampling performed with Vega using default parameters.</p>
-    <p>Assign charges and potential:<br>
-      FF: SP4<br>
-      Charges: Ammp-Mom<br>
-      Minimization (1 run with default parameters)<br>
-      Dielectric Constant: 80.0/4.81 wat(ca)/chl(ne)<br>
-      Conf. Sampling<br>
-      Default parameters with Boltzman Jump)<br>
-      Torsion: (Mod. Torsion - Modify - Add Torsion - Flexible)<br>
-      Output: save trajectory, energy and output<br>
-    </p>
+    <p>Conformational sampling performed with Vega.</p>
     <h2>Data input</h2>
     <h3>Input </h3>
     <p>Launch Vega</p>
+    <p><i>File </i>- <i>Open </i>- Choose the file (generally a mol2 file)</p>
+    <p>Assign charges and potential.</p>
+    <p><i>Calculate </i>- <i>Charge &amp; Pot</i></p>
+    <p>Choose parameters:<i><br>
+      </i></p>
     <ul>
-      <li>Tools - MD/Ensemble Analysis - MD Movie</li>
+      <li>FF: SP4</li>
+      <li>Charges: Ammp-Mom</li>
+    </ul>
+    <p>Then, click <i>Fix</i>.</p>
+    <ul>
+      <li>Check the total charge.</li>
+    </ul>
+    <p>Finally, minimize the structure to be sure that all is ok.</p>
+    <p><i>Calculate </i>- <i>Ammp </i>- <i>Run</i></p>
+    <ul>
+      <li>Use default parameters</li>
+      <li>Save the file in the working directory: <i>File </i>- <i>Save as</i></li>
+    </ul>
+    <h2>Conformational sampling</h2>
+    <h3>Setup the simulation</h3>
+    <p><i>Calculate </i>- <i>Ammp </i>- <i>Run - Conformational search</i></p>
+    <p>In the Conformational search window select the different panels clicking
+      on the label on the bottom to setup the simulation:</p>
+    <ul>
+      <li><i>Conformational search panel</i></li>
       <ul>
-        <li>Select PDB as Trajectory Format</li>
-        <li>Select PDB frames contained in <i>single file</i> option</li>
+        <li>Method: Boltzman jump (default)</li>
+        <li>Default parameters</li>
+        <li>Set the torsion angles</li>
         <ul>
-          <li>Use the <i>Browse </i>to navigate to the working directory,
-            click on the name on the working pdb file and click on <i>Set Input
-              location</i></li>
-        </ul>
-        <li>Click on the <i>ok</i> button</li>
-        <li>The conformers are loaded as a trajectory and are visible in Chimera</li>
-        <ul>
-          <li>It is possible to navigate through the conformations using the
-            commands in the tool</li>
+          <li><i>Edit torsion</i> - <i>Edit </i>- <i>Add torsion</i> - <i>Flexible</i></li>
         </ul>
       </ul>
+      <li><i>Output panel</i></li>
+      <ul>
+        <li>Click to save Trajectory, Output and Energy</li>
+        <ul>
+          <li>Check that files are saved in the working directory</li>
+        </ul>
+      </ul>
+      <li><i>Parameters</i></li>
+      <ul>
+        <li>Dielectric Constant: 80.0/4.81 wat(ca)/chl(ne)</li>
+      </ul>
+      <li><i>Potential</i></li>
+      <ul>
+        <li>Type: SP4</li>
+      </ul>
     </ul>
-    <br>
+    <p>Finally, click <i>Run</i></p>
+    <h2>Analyses of the trajectory<i><br>
+      </i></h2>
+    <p><i>Calculate </i>- <i>Analysis</i></p>
+    <ul>
+      <li>Select the Trajectory that was saved in dcd format</li>
+    </ul>
+    <div style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
+          alt="Home" title="Home" style="width: 64px; height: 64px;"></a></div>
   </body>
 </html>
