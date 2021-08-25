@@ -29,7 +29,7 @@
     <p>In the "<i>OpenEye-Applications Ver</i>" command line, run Szybki</p>
     <div id="Instr"> szybki -mpi_np 8 -in mol.mol2 -out mol_sz.mol2 -prefix
       mol_sz</div>
-    <h2>Conformations generation</h2>
+    <h2>Generation of conformations</h2>
     The file prepared in the step above is submitted to Omega for the
     conformational sampling.
     <p>The most recent versions of Omega does not implement a search dependent
@@ -46,6 +46,7 @@
     <p>Then the conformations are definitively minimized submitting the Omega
       the output to Szybki. This software also calculates and writes the final
       energy of the conformers.</p>
+    <h2>Final minimization with Szbyki</h2>
     <p>The command to run a minimization in chloroform is:</p>
     <div id="Instr">szybki -mpi_np 4 -solv_dielectric 4.81 -current_charges true
       -ff mmff94s -solventPB -solventCA 0.005 -prefix mol_sz_chl -in
@@ -71,8 +72,7 @@
         <li>cyclohexane (hex): 2.02</li>
       </ul>
     </ul>
-    <div style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
-
+    <div style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
           alt="Home" title="Home" style="width: 64px; height: 64px;"></a></div>
   </body>
 </html>

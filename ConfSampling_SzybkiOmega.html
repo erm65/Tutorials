@@ -18,6 +18,19 @@
       export PATH=/opt/openeye/bin:$PATH<br>
       export OE_LICENSE=/opt/openeye/oe_license.txt<br>
     </div>
+    <p>Many jobs take a long time, so it is advisable to run the job in
+      background and close the MobaXterm session. </p>
+    <p>To do this you need to use <i>nohup </i>and <i>&amp;</i> commands
+      following the general syntax:</p>
+    <div id="Instr">nohup COMMAND &amp;</div>
+    <p>e.g.: </p>
+    <div id="Instr">nohup oeomega classic -commentEnergy true -ewindow 10
+      -maxconfs 1000000 -strict -in mol_sz.mol2 -out mol_oel.mol2 -prefix
+      mol_oel -mpi_np 4 &amp;</div>
+    <p>WARNING: background jobs ONLY works if you exit the MobaXterm session
+      using <i>CRTL d</i> keys sequence. If you exit by clicking on the cross
+      at the top right of the MobaXterm window or using OTHER METHODS, the JOB
+      STOPS. </p>
     <h2>First minimization with Szybki </h2>
     <p>The goal of this step is the setup of a correct and minimized structure
       that will be the starting point of the next steps. It is important that
