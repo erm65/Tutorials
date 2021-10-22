@@ -18,7 +18,7 @@
       <li><a href="ConfSampling_Freeform.html">OpenEye software (Freeform)</a><span
           style="color: #0000ee;"> </span>-- Do not use!</li>
       <li><a href="ConfSampling_Schrodinger.html">Schrodinger software</a></li>
-      <li>Vega </li>
+      <li><a href="ConfSampling_Vega.html">Vega</a> </li>
     </ul>
     <h2>3D-descriptors calculation</h2>
     <ul>
