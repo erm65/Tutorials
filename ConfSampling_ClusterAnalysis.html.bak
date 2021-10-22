@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Conformational sampling with Vega</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <h1>Conformational Sampling: cluster analysis</h1>
+    <h2>Introduction</h2>
+    <p>Cluster analysis applied to multimol2 files resulting from a
+      conformational sampling.</p>
+    <p>The procedure uses a combination of PyEMMA and OpenEye (OE Toolkit)
+      Python tools.</p>
+    <h3>Pre-requisite</h3>
+    <p>Anaconda Python distribution</p>
+    <p>PyEMMA</p>
+    <p>OE Toolkit</p>
+    <h2>Torsion angles list</h2>
+    Launch Vega
+    <p><i>File </i>- <i>Open </i>- Choose the file (generally a mol2 file)</p>
+    <i>Calculate </i>- <i>Ammp </i>- <i>Run - Conformational search</i>
+    <p>In the Conformational search window select the different panels clicking
+      on the label on the bottom to setup the simulation:</p>
+    <ul>
+      <li><i>Conformational search panel</i></li>
+      <ul>
+        <li>Set the torsion angles</li>
+        <ul>
+          <li><i>Edit torsion</i> - <i>Edit </i>- <i>Add torsion</i> - <i>Flexible</i></li>
+          <li>Click on <i>save</i> from the <i>Selection tool</i> panel</li>
+        </ul>
+      </ul>
+    </ul>
+    <p>Check the file with the list of flexible torsion angles.</p>
+    <p>In the list of torsional angles obtained with Vega there is the atom name
+      of the four atoms that define each flexible torsional angle. In the next
+      steps the serial number of the atoms involved in each flexible torsion
+      angles is required thus it is necessary to extract the information
+      manually or with the help of Excel (<span style="color: red;">to do:
+        probably it is possible to extract the serial number of atoms involved
+        in flexible torsion angles using the OE toolkits</span>)</p>
+    <h2>Analyses of the trajectory</h2>
+    <p>Run Anaconda</p>
+    <p>Then, run jupyter Notebook</p>
+    <p>In the Notebook file manager, move to the working directory</p>
+    <p>Put the file ClusterAnalysisFull.ipynb in the working directory and click
+      on it from the Notebook file manager.</p>
+    <p>A new ipykernel is opened in the browser with all the Python instructions</p>
+    <ul>
+      <li>Change the name of the files according to the system under analysis</li>
+    </ul>
+    <div style="text-align: right;"><a href="index.html" title="Index"><img src="Images/home-button.jpg"
+          alt="Home" title="Home" style="width: 64px; height: 64px;"></a></div>
+  </body>
+</html>
